@@ -1,0 +1,2 @@
+[33m@ao/ao-sdk-ts:build: [0mcache hit, replaying output [2m7c8d384d816a76d0[0m
+[33m@ao/ao-sdk-ts:build: [0m$ rm -rf dist && tsc

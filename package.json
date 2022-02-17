@@ -1,0 +1,43 @@
+{
+  "name": "@ao/sa-sdk-ts",
+  "version": "1.0.0",
+  "description": "OpenAPI client for sa-sdk-ts",
+  "author": "OpenAPI-Generator Contributors",
+  "keywords": [
+    "fetch",
+    "typescript",
+    "openapi-client",
+    "openapi-generator"
+  ],
+  "license": "Unlicense",
+  "main": "./index",
+  "typings": "./index",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "prep": "npm run build",
+    "pre-prep": "npm run build",
+    "test": "jest --setupFiles dotenv/config"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "@types/node-fetch": "^2.5.7",
+    "@types/jsonwebtoken": "^8.5.5",
+    "form-data": "^2.5.0",
+    "btoa": "^1.2.1",
+    "es6-promise": "^4.2.4",
+    "url-parse": "^1.4.3",
+    "dotenv": "^10.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "jose": "^4.3.7"
+  },
+  "devDependencies": {
+    "@ao/ao-typings": "*",
+    "@types/jest": "^26.0.24",
+    "@types/jsonwebtoken": "^8.5.5",
+    "@types/node": "^16.11.1",
+    "@types/node-fetch": "^2.5.7",
+    "@types/url-parse": "^1.4.3",
+    "jest": "26.6.0",
+    "ts-jest": "^26.5.6"
+  }
+}
