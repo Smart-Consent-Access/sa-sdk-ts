@@ -40,7 +40,7 @@ if [ "$git_remote" = "" ]; then # git remote not defined
         git remote add origin https://github.com/${git_repo_id}.git
     # else
     #     git remote add origin https://${git_user_id}:${GIT_TOKEN}@github.com/${git_user_id}/${git_repo_id}.git
-    # fi
+    fi
 
 fi
 
