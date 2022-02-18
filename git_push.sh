@@ -1,21 +1,11 @@
 #!/bin/sh
 # ref: https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/
 #
-# Usage example: /bin/sh ./git_push.sh wing328 openapi-pestore-perl "minor update"
+# Usage example: /bin/sh ./git_push.sh "minor update"
 
-# git_user_id=$1
-git_repo_id=$1
-release_note=$2
+release_note=$1
 
-# if [ "$git_user_id" = "" ]; then
-#     git_user_id="GIT_USER_ID"
-#     echo "[INFO] No command line input provided. Set \$git_user_id to $git_user_id"
-# fi
-
-if [ "$git_repo_id" = "" ]; then
-    git_repo_id="GIT_REPO_ID"
-    echo "[INFO] No command line input provided. Set \$git_repo_id to $git_repo_id"
-fi
+git_repo_id=Smart-Consent-Access/sa-sdk-ts
 
 if [ "$release_note" = "" ]; then
     release_note="Minor update"
@@ -34,20 +24,12 @@ git commit -m "$release_note"
 # Sets the new remote
 git_remote=`git remote`
 if [ "$git_remote" = "" ]; then # git remote not defined
-
-    if [ "$GIT_TOKEN" = "" ]; then
-        echo "[INFO] \$GIT_TOKEN (environment variable) is not set. Using the git credential in your environment."
-        git remote add origin git@github.com:Smart-Consent-Access/sa-sdk-ts.git
-                                
-    # else
-    #     git remote add origin https://${git_user_id}:${GIT_TOKEN}@github.com/${git_user_id}/${git_repo_id}.git
-    fi
-
+    git remote add origin git@github.com:$git_repo_id.git
 fi
 
 git pull origin master
 
 # Pushes (Forces) the changes in the local repository up to the remote repository
-echo "Git pushing to git@github.com:Smart-Consent-Access/sa-sdk-ts.git"
+echo "Git pushing to git@github.com:$git_repo_id.git"
 git push origin master 2>&1 | grep -v 'To https'
 
