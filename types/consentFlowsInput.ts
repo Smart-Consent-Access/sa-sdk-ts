@@ -1,4 +1,4 @@
-import { LocalizedString } from "@ao/ao-typings";
+import { LocalizedString } from "@smart-consent-access/sa-typings";
 
 export interface ConsentFlowCreateOutput {
   url: string;

@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import SmartAccess from "../index";
-import { AHAuthTicket } from "@ao/ao-typings";
+import { SAAuthTicket } from "@smart-consent-access/sa-typings";
 
 const SA = new SmartAccess();
 
@@ -29,7 +29,7 @@ describe("Audit ticket", () => {
       iss: "Association Orchestrator",
     };
 
-    const result: AHAuthTicket = await SA.policyEnforcement.ticketAudit({
+    const result: SAAuthTicket = await SA.policyEnforcement.ticketAudit({
       ticket: ticket,
     });
 

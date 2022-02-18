@@ -261,7 +261,7 @@ export class ObservableConsentRequestsApi {
  
     /**
      * Finalize a consent request as the consenting service provider. The information about the consent request is specified in the request body with a signed JWT which will be verified to be signed by the calling/consenting service provider
-     * @param consentRequestFinalizeBody The signed jwt with payload of type AHConsReqFinalizeSp2ToAhJWT
+     * @param consentRequestFinalizeBody The signed jwt with payload of type SAConsReqFinalizeSp2ToSaJWT
      */
     public flowConsentRequestFinalize(consentRequestFinalizeBody: ConsentRequestFinalizeBody, _options?: Configuration): Observable<ConsentRequestFinalizeUrlDTO> {
         const requestContextPromise = this.requestFactory.flowConsentRequestFinalize(consentRequestFinalizeBody, _options);
@@ -284,7 +284,7 @@ export class ObservableConsentRequestsApi {
  
     /**
      * Initialize a consent request as the requesting service provider. The information about the request is specified in the request body with a signed JWT which will be verified to be signed by the calling/requesting service provider
-     * @param consentRequestTokenBody The signed jwt with payload of type AHConsReqInitializeSp1ToAhJWT
+     * @param consentRequestTokenBody The signed jwt with payload of type SAConsReqInitializeSp1ToSaJWT
      */
     public flowConsentRequestInitialize(consentRequestTokenBody: ConsentRequestTokenBody, _options?: Configuration): Observable<ConsentRequestUrlDTO> {
         const requestContextPromise = this.requestFactory.flowConsentRequestInitialize(consentRequestTokenBody, _options);
@@ -394,7 +394,7 @@ export class ObservableConsentsApi {
  
     /**
      * Finalize a consent approval as the requesting service provider. The information about the request to approve is specified in the request body with a signed JWT which will be verified to be signed by the calling/requesting service provider
-     * @param consentApprovalFinalizeBody The signed jwt with payload of type AHConsApprovalFinalizeSp1ToAhJWT
+     * @param consentApprovalFinalizeBody The signed jwt with payload of type SAConsApprovalFinalizeSp1ToSaJWT
      */
     public flowConsentApprovalFinalize(consentApprovalFinalizeBody: ConsentApprovalFinalizeBody, _options?: Configuration): Observable<ApprovalDoneUrlDTO> {
         const requestContextPromise = this.requestFactory.flowConsentApprovalFinalize(consentApprovalFinalizeBody, _options);
@@ -417,7 +417,7 @@ export class ObservableConsentsApi {
  
     /**
      * Initialize a consent approval as the consenting service provider. The information about the request to approve is specified in the request body with a signed JWT which will be verified to be signed by the calling/consenting service provider
-     * @param consentApprovalInitializeBody The signed jwt with payload of type AHConsApprovalInitializeSp2ToAhJWT
+     * @param consentApprovalInitializeBody The signed jwt with payload of type SAConsApprovalInitializeSp2ToSaJWT
      */
     public flowConsentApprovalInitialize(consentApprovalInitializeBody: ConsentApprovalInitializeBody, _options?: Configuration): Observable<ApprovalDoneUrlDTO> {
         const requestContextPromise = this.requestFactory.flowConsentApprovalInitialize(consentApprovalInitializeBody, _options);

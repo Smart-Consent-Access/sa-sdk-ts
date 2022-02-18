@@ -1,4 +1,4 @@
-import { AHAuthTicket } from "@ao/ao-typings";
+import { SAAuthTicket } from "@smart-consent-access/sa-typings";
 import { jwtVerify } from "jose";
 import { createPublicKey } from "crypto";
 import { BadRequestError } from "../models/ApiError";
@@ -7,8 +7,8 @@ import { TicketAuditInput } from "../types/policyEnforcementInput";
 
 export class PolicyEnforcement {
   public constructor(private config: ConfigFileInput) {}
-  public async ticketAudit(input: TicketAuditInput): Promise<AHAuthTicket> {
-    const authZTicket = <AHAuthTicket>(
+  public async ticketAudit(input: TicketAuditInput): Promise<SAAuthTicket> {
+    const authZTicket = <SAAuthTicket>(
       (<any>(
         (await jwtVerify(input.ticket, createPublicKey(this.config.saPublicKey)))
           .payload

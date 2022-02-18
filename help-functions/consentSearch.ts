@@ -1,7 +1,7 @@
 import { ConsentRequestsApi } from "../index";
 import { ConfigFileInput } from "../types/configFileInput";
 import { ConsentRequest, FetchConsentRequestForResource } from "../types/consentSearchParam";
-import { AHAuthTicket } from "@ao/ao-typings";
+import { SAAuthTicket } from "@smart-consent-access/sa-typings";
 
 // TODO: Replace when we have a search endpoint in AO
 // Summary: Fetches all SP CR's and filters out the one with resource User=<msisdn>
@@ -27,7 +27,7 @@ export class ConsentSearch {
     return consentRequestsForCustomer;
   }
 
-  public async findCondition(ticket: AHAuthTicket, key: string, condition: string): Promise<string> {
+  public async findCondition(ticket: SAAuthTicket, key: string, condition: string): Promise<string> {
     const conditions = ticket.conditions
       .map((c) => c.split(key)[1].split("="))
       .reduce((memo, cond) => {

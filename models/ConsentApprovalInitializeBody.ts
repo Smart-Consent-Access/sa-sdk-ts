@@ -13,7 +13,7 @@
 import { HttpFile } from '../http/http';
 
 /**
-* Body to send when initializing a consent approval. Contains a jwt signed by the issuer which is the consenting serviceprovider. The jwt payload is of type AHConsApprovalInitializeSp2ToAhJWT
+* Body to send when initializing a consent approval. Contains a jwt signed by the issuer which is the consenting serviceprovider. The jwt payload is of type SAConsApprovalInitializeSp2ToSaJWT
 */
 export class ConsentApprovalInitializeBody {
     /**

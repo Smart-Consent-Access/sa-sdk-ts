@@ -83,7 +83,7 @@ const configuration = .createConfiguration();
 const apiInstance = new .ConsentRequestsApi(configuration);
 
 let body:.ConsentRequestsApiFlowConsentRequestFinalizeRequest = {
-  // ConsentRequestFinalizeBody | The signed jwt with payload of type AHConsReqFinalizeSp2ToAhJWT
+  // ConsentRequestFinalizeBody | The signed jwt with payload of type SAConsReqFinalizeSp2ToSaJWT
   consentRequestFinalizeBody: {
     consReqFinalizeJWT: "z.AMDTMv3D3ylmgd21Z4UB7UkJSISSB623iz3DiJy.12UH1-9-kQEFkLkvyHfCdEAAg9zj5gGu-+shjbE1Eva66tk/LlJwL4CTLxzWhej2zFvhjFRboDzLsp7gf1OAK",
   },
@@ -99,7 +99,7 @@ apiInstance.flowConsentRequestFinalize(body).then((data:any) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **consentRequestFinalizeBody** | **ConsentRequestFinalizeBody**| The signed jwt with payload of type AHConsReqFinalizeSp2ToAhJWT |
+ **consentRequestFinalizeBody** | **ConsentRequestFinalizeBody**| The signed jwt with payload of type SAConsReqFinalizeSp2ToSaJWT |
 
 
 ### Return type
@@ -143,7 +143,7 @@ const configuration = .createConfiguration();
 const apiInstance = new .ConsentRequestsApi(configuration);
 
 let body:.ConsentRequestsApiFlowConsentRequestInitializeRequest = {
-  // ConsentRequestTokenBody | The signed jwt with payload of type AHConsReqInitializeSp1ToAhJWT
+  // ConsentRequestTokenBody | The signed jwt with payload of type SAConsReqInitializeSp1ToSaJWT
   consentRequestTokenBody: {
     requestingToken: "z.AMDTMv3D3ylmgd21Z4UB7UkJSISSB623iz3DiJy.12UH1-9-kQEFkLkvyHfCdEAAg9zj5gGu-+shjbE1Eva66tk/LlJwL4CTLxzWhej2zFvhjFRboDzLsp7gf1OAK",
   },
@@ -159,7 +159,7 @@ apiInstance.flowConsentRequestInitialize(body).then((data:any) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **consentRequestTokenBody** | **ConsentRequestTokenBody**| The signed jwt with payload of type AHConsReqInitializeSp1ToAhJWT |
+ **consentRequestTokenBody** | **ConsentRequestTokenBody**| The signed jwt with payload of type SAConsReqInitializeSp1ToSaJWT |
 
 
 ### Return type

@@ -62,7 +62,7 @@ export class ConsentRequestsApiRequestFactory extends BaseAPIRequestFactory {
 
     /**
      * Finalize a consent request as the consenting service provider. The information about the consent request is specified in the request body with a signed JWT which will be verified to be signed by the calling/consenting service provider
-     * @param consentRequestFinalizeBody The signed jwt with payload of type AHConsReqFinalizeSp2ToAhJWT
+     * @param consentRequestFinalizeBody The signed jwt with payload of type SAConsReqFinalizeSp2ToSaJWT
      */
     public async flowConsentRequestFinalize(consentRequestFinalizeBody: ConsentRequestFinalizeBody, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -105,7 +105,7 @@ export class ConsentRequestsApiRequestFactory extends BaseAPIRequestFactory {
 
     /**
      * Initialize a consent request as the requesting service provider. The information about the request is specified in the request body with a signed JWT which will be verified to be signed by the calling/requesting service provider
-     * @param consentRequestTokenBody The signed jwt with payload of type AHConsReqInitializeSp1ToAhJWT
+     * @param consentRequestTokenBody The signed jwt with payload of type SAConsReqInitializeSp1ToSaJWT
      */
     public async flowConsentRequestInitialize(consentRequestTokenBody: ConsentRequestTokenBody, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;

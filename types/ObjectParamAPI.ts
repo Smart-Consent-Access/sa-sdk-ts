@@ -164,7 +164,7 @@ export interface ConsentRequestsApiDeleteIdRequest {
 
 export interface ConsentRequestsApiFlowConsentRequestFinalizeRequest {
     /**
-     * The signed jwt with payload of type AHConsReqFinalizeSp2ToAhJWT
+     * The signed jwt with payload of type SAConsReqFinalizeSp2ToSaJWT
      * @type ConsentRequestFinalizeBody
      * @memberof ConsentRequestsApiflowConsentRequestFinalize
      */
@@ -173,7 +173,7 @@ export interface ConsentRequestsApiFlowConsentRequestFinalizeRequest {
 
 export interface ConsentRequestsApiFlowConsentRequestInitializeRequest {
     /**
-     * The signed jwt with payload of type AHConsReqInitializeSp1ToAhJWT
+     * The signed jwt with payload of type SAConsReqInitializeSp1ToSaJWT
      * @type ConsentRequestTokenBody
      * @memberof ConsentRequestsApiflowConsentRequestInitialize
      */
@@ -261,7 +261,7 @@ export interface ConsentsApiCreateAuthZTicketForConsentRequest {
 
 export interface ConsentsApiFlowConsentApprovalFinalizeRequest {
     /**
-     * The signed jwt with payload of type AHConsApprovalFinalizeSp1ToAhJWT
+     * The signed jwt with payload of type SAConsApprovalFinalizeSp1ToSaJWT
      * @type ConsentApprovalFinalizeBody
      * @memberof ConsentsApiflowConsentApprovalFinalize
      */
@@ -270,7 +270,7 @@ export interface ConsentsApiFlowConsentApprovalFinalizeRequest {
 
 export interface ConsentsApiFlowConsentApprovalInitializeRequest {
     /**
-     * The signed jwt with payload of type AHConsApprovalInitializeSp2ToAhJWT
+     * The signed jwt with payload of type SAConsApprovalInitializeSp2ToSaJWT
      * @type ConsentApprovalInitializeBody
      * @memberof ConsentsApiflowConsentApprovalInitialize
      */

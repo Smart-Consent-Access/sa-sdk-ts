@@ -1,15 +1,15 @@
 import { createPublicKey } from "crypto";
 import {
-  AHConsReqInitializeSp1ToAhJWT,
-  AHConsReqFinalizeSp2ToAhJWT,
-  AHConsApprovalInitializeSp2ToAhJWT,
-  AHConsApprovalFinalizeSp1ToAhJWT,
-  AHConsReqInitializeAhToSp2JWT,
-  AHConsReqFinalizeAhToSp1JWT,
-  AHConsApprovalInitializeAhToSp1JWT,
-  AHConsApprovalFinalizeAhToSp2JWT,
+  SAConsReqInitializeSp1ToSaJWT,
+  SAConsReqFinalizeSp2ToSaJWT,
+  SAConsApprovalInitializeSp2ToSaJWT,
+  SAConsApprovalFinalizeSp1ToSaJWT,
+  SAConsReqInitializeSaToSp2JWT,
+  SAConsReqFinalizeSaToSp1JWT,
+  SAConsApprovalInitializeSaToSp1JWT,
+  SAConsApprovalFinalizeSaToSp2JWT,
   LocalizedString,
-} from "@ao/ao-typings";
+} from "@smart-consent-access/sa-typings";
 import { jwtVerify } from "jose";
 import * as fs from "fs";
 import SmartAccess from "../index";
@@ -72,7 +72,7 @@ describe("create and verify urls", () => {
       purpose: purpose
     });
 
-    const openResult = <AHConsReqInitializeSp1ToAhJWT>(
+    const openResult = <SAConsReqInitializeSp1ToSaJWT>(
       (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
     );
 
@@ -97,7 +97,7 @@ describe("create and verify urls", () => {
       consentServiceProviderId: consServiceProviderId
     });
 
-    const openResult = <AHConsReqInitializeSp1ToAhJWT>(
+    const openResult = <SAConsReqInitializeSp1ToSaJWT>(
       (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
     );
 
@@ -131,7 +131,7 @@ describe("create and verify urls", () => {
       expirationTime: expirationTime,
     });
 
-    const openResult = <AHConsReqFinalizeSp2ToAhJWT>(
+    const openResult = <SAConsReqFinalizeSp2ToSaJWT>(
       (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
     );
 
@@ -153,7 +153,7 @@ describe("create and verify urls", () => {
       consentRequestId: consentRequestId,
     });
 
-    const openResult = <AHConsReqFinalizeSp2ToAhJWT>(
+    const openResult = <SAConsReqFinalizeSp2ToSaJWT>(
       (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
     );
 
@@ -191,7 +191,7 @@ describe("create and verify urls", () => {
       expirationTime: expirationTime,
     });
 
-    const openResult = <AHConsApprovalInitializeSp2ToAhJWT>(
+    const openResult = <SAConsApprovalInitializeSp2ToSaJWT>(
       (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
     );
 
@@ -215,7 +215,7 @@ describe("create and verify urls", () => {
       consentRequestId: consentRequestId,
     });
 
-    const openResult = <AHConsApprovalInitializeSp2ToAhJWT>(
+    const openResult = <SAConsApprovalInitializeSp2ToSaJWT>(
       (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
     );
 
@@ -239,7 +239,7 @@ describe("create and verify urls", () => {
       expirationTime: expirationTime,
     });
 
-    const openResult = <AHConsApprovalFinalizeSp1ToAhJWT>(
+    const openResult = <SAConsApprovalFinalizeSp1ToSaJWT>(
       (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
     );
 
@@ -260,7 +260,7 @@ describe("create and verify urls", () => {
       consentId: consentId,
     });
 
-    const openResult = <AHConsApprovalFinalizeSp1ToAhJWT>(
+    const openResult = <SAConsApprovalFinalizeSp1ToSaJWT>(
       (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
     );
 
@@ -289,7 +289,7 @@ describe("open and return consent payloads", () => {
     };
     const ticket = fs.readFileSync("./config/conReqInitTicket.txt", "utf8");
 
-    const result: AHConsReqInitializeAhToSp2JWT =
+    const result: SAConsReqInitializeSaToSp2JWT =
       await SA.consentFlows.receiveConsentRequestInitialization(ticket);
 
     expect(result).toEqual(expectedResult);
@@ -309,7 +309,7 @@ describe("open and return consent payloads", () => {
     };
     const ticket = fs.readFileSync("./config/conReqFinTicket.txt", "utf8");
 
-    const result: AHConsReqFinalizeAhToSp1JWT =
+    const result: SAConsReqFinalizeSaToSp1JWT =
       await SA.consentFlows.receiveConsentRequestFinalization(ticket);
 
     expect(result).toEqual(expectedResult);
@@ -333,7 +333,7 @@ describe("open and return consent payloads", () => {
     };
     const ticket = fs.readFileSync("./config/conAppInitTicket.txt", "utf8");
 
-    const result: AHConsApprovalInitializeAhToSp1JWT =
+    const result: SAConsApprovalInitializeSaToSp1JWT =
       await SA.consentFlows.receiveConsentApprovalInitialization(ticket);
 
     expect(result).toEqual(expectedResult);
@@ -350,7 +350,7 @@ describe("open and return consent payloads", () => {
     };
     const ticket = fs.readFileSync("./config/conAppFinTicket.txt", "utf8");
 
-    const result: AHConsApprovalFinalizeAhToSp2JWT =
+    const result: SAConsApprovalFinalizeSaToSp2JWT =
       await SA.consentFlows.receiveConsentApprovalFinalization(ticket);
 
     expect(result).toEqual(expectedResult);

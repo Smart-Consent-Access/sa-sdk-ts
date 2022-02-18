@@ -1,13 +1,13 @@
 import {
-  AHConsReqInitializeSp1ToAhJWT,
-  AHConsReqFinalizeSp2ToAhJWT,
-  AHConsApprovalFinalizeSp1ToAhJWT,
-  AHConsApprovalInitializeSp2ToAhJWT,
-  AHConsReqInitializeAhToSp2JWT,
-  AHConsReqFinalizeAhToSp1JWT,
-  AHConsApprovalInitializeAhToSp1JWT,
-  AHConsApprovalFinalizeAhToSp2JWT,
-} from "@ao/ao-typings";
+  SAConsReqInitializeSp1ToSaJWT,
+  SAConsReqFinalizeSp2ToSaJWT,
+  SAConsApprovalFinalizeSp1ToSaJWT,
+  SAConsApprovalInitializeSp2ToSaJWT,
+  SAConsReqInitializeSaToSp2JWT,
+  SAConsReqFinalizeSaToSp1JWT,
+  SAConsApprovalInitializeSaToSp1JWT,
+  SAConsApprovalFinalizeSaToSp2JWT,
+} from "@smart-consent-access/sa-typings";
 import { SignJWT } from "jose";
 import { createPrivateKey, createPublicKey } from "crypto";
 import { jwtVerify } from "jose";
@@ -29,7 +29,7 @@ export class ConsentFlows {
   public async createConsentRequestInitialization(
     input: InitiateConsentRequestInput
   ): Promise<ConsentFlowCreateOutput> {
-    const consReqJwtPayload: Partial<AHConsReqInitializeSp1ToAhJWT> = {
+    const consReqJwtPayload: Partial<SAConsReqInitializeSp1ToSaJWT> = {
       goal: "INITIATE",
       type: "CONSENT_REQUEST",
       kind: "FLOW",
@@ -56,7 +56,7 @@ export class ConsentFlows {
   public async createConsentRequestFinalization(
     input: FinalizeConsentRequestInput
   ): Promise<ConsentFlowCreateOutput> {
-    const consReqJwtPayload: Partial<AHConsReqFinalizeSp2ToAhJWT> = {
+    const consReqJwtPayload: Partial<SAConsReqFinalizeSp2ToSaJWT> = {
       goal: "FINALIZE",
       type: "CONSENT_REQUEST",
       kind: "FLOW",
@@ -77,7 +77,7 @@ export class ConsentFlows {
   public async createConsentApprovalInitialization(
     input: InitiateConsentApprovalInput
   ): Promise<ConsentFlowCreateOutput> {
-    const consReqJwtPayload: Partial<AHConsApprovalInitializeSp2ToAhJWT> = {
+    const consReqJwtPayload: Partial<SAConsApprovalInitializeSp2ToSaJWT> = {
       goal: "INITIATE",
       type: "CONSENT_APPROVAL",
       kind: "FLOW",
@@ -100,7 +100,7 @@ export class ConsentFlows {
   public async createConsentApprovalFinalization(
     input: FinalizeConsentApprovalInput
   ): Promise<ConsentFlowCreateOutput> {
-    const consReqJwtPayload: Partial<AHConsApprovalFinalizeSp1ToAhJWT> = {
+    const consReqJwtPayload: Partial<SAConsApprovalFinalizeSp1ToSaJWT> = {
       goal: "FINALIZE",
       type: "CONSENT_APPROVAL",
       kind: "FLOW",
@@ -118,42 +118,42 @@ export class ConsentFlows {
 
   public async receiveConsentRequestInitialization(
     requestTicket: string
-  ): Promise<AHConsReqInitializeAhToSp2JWT> {
+  ): Promise<SAConsReqInitializeSaToSp2JWT> {
     const ticket = await jwtVerify(
       requestTicket,
       createPublicKey(this.config.saPublicKey)
     );
-    return <AHConsReqInitializeAhToSp2JWT>(<any>ticket.payload);
+    return <SAConsReqInitializeSaToSp2JWT>(<any>ticket.payload);
   }
 
   public async receiveConsentRequestFinalization(
     requestTicket: string
-  ): Promise<AHConsReqFinalizeAhToSp1JWT> {
+  ): Promise<SAConsReqFinalizeSaToSp1JWT> {
     const ticket = await jwtVerify(
       requestTicket,
       createPublicKey(this.config.saPublicKey)
     );
-    return <AHConsReqFinalizeAhToSp1JWT>(<any>ticket.payload);
+    return <SAConsReqFinalizeSaToSp1JWT>(<any>ticket.payload);
   }
 
   public async receiveConsentApprovalInitialization(
     requestTicket: string
-  ): Promise<AHConsApprovalInitializeAhToSp1JWT> {
+  ): Promise<SAConsApprovalInitializeSaToSp1JWT> {
     const ticket = await jwtVerify(
       requestTicket,
       createPublicKey(this.config.saPublicKey)
     );
-    return <AHConsApprovalInitializeAhToSp1JWT>(<any>ticket.payload);
+    return <SAConsApprovalInitializeSaToSp1JWT>(<any>ticket.payload);
   }
 
   public async receiveConsentApprovalFinalization(
     requestTicket: string
-  ): Promise<AHConsApprovalFinalizeAhToSp2JWT> {
+  ): Promise<SAConsApprovalFinalizeSaToSp2JWT> {
     const ticket = await jwtVerify(
       requestTicket,
       createPublicKey(this.config.saPublicKey)
     );
-    return <AHConsApprovalFinalizeAhToSp2JWT>(<any>ticket.payload);
+    return <SAConsApprovalFinalizeSaToSp2JWT>(<any>ticket.payload);
   }
 
   private async createToken(input: CreateRequestInput): Promise<ConsentFlowCreateOutput> {

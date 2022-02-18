@@ -1,5 +1,5 @@
 import SmartAccess from "../index";
-import { AHAuthTicket } from "@ao/ao-typings";
+import { SAAuthTicket } from "@smart-consent-access/sa-typings";
 
 const SA = new SmartAccess();
 
@@ -120,7 +120,7 @@ describe("fetch", () => {
 });
 
 describe("find", () => {
-  const ticket: AHAuthTicket = {
+  const ticket: SAAuthTicket = {
     kind: "AUTH_TICKET",
     scope: ["serviceprovider:ticket"],
     reqServiceProviderId: "string",

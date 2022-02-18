@@ -84,7 +84,7 @@ const configuration = .createConfiguration();
 const apiInstance = new .ConsentsApi(configuration);
 
 let body:.ConsentsApiFlowConsentApprovalFinalizeRequest = {
-  // ConsentApprovalFinalizeBody | The signed jwt with payload of type AHConsApprovalFinalizeSp1ToAhJWT
+  // ConsentApprovalFinalizeBody | The signed jwt with payload of type SAConsApprovalFinalizeSp1ToSaJWT
   consentApprovalFinalizeBody: {
     consApprovalFinalizeJWT: "z.AMDTMv3D3ylmgd21Z4UB7UkJSISSB623iz3DiJy.12UH1-9-kQEFkLkvyHfCdEAAg9zj5gGu-+shjbE1Eva66tk/LlJwL4CTLxzWhej2zFvhjFRboDzLsp7gf1OAK",
   },
@@ -100,7 +100,7 @@ apiInstance.flowConsentApprovalFinalize(body).then((data:any) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **consentApprovalFinalizeBody** | **ConsentApprovalFinalizeBody**| The signed jwt with payload of type AHConsApprovalFinalizeSp1ToAhJWT |
+ **consentApprovalFinalizeBody** | **ConsentApprovalFinalizeBody**| The signed jwt with payload of type SAConsApprovalFinalizeSp1ToSaJWT |
 
 
 ### Return type
@@ -144,7 +144,7 @@ const configuration = .createConfiguration();
 const apiInstance = new .ConsentsApi(configuration);
 
 let body:.ConsentsApiFlowConsentApprovalInitializeRequest = {
-  // ConsentApprovalInitializeBody | The signed jwt with payload of type AHConsApprovalInitializeSp2ToAhJWT
+  // ConsentApprovalInitializeBody | The signed jwt with payload of type SAConsApprovalInitializeSp2ToSaJWT
   consentApprovalInitializeBody: {
     approvalToken: "z.AMDTMv3D3ylmgd21Z4UB7UkJSISSB623iz3DiJy.12UH1-9-kQEFkLkvyHfCdEAAg9zj5gGu-+shjbE1Eva66tk/LlJwL4CTLxzWhej2zFvhjFRboDzLsp7gf1OAK",
   },
@@ -160,7 +160,7 @@ apiInstance.flowConsentApprovalInitialize(body).then((data:any) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **consentApprovalInitializeBody** | **ConsentApprovalInitializeBody**| The signed jwt with payload of type AHConsApprovalInitializeSp2ToAhJWT |
+ **consentApprovalInitializeBody** | **ConsentApprovalInitializeBody**| The signed jwt with payload of type SAConsApprovalInitializeSp2ToSaJWT |
 
 
 ### Return type

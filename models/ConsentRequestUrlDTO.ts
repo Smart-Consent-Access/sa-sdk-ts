@@ -13,7 +13,7 @@
 import { HttpFile } from '../http/http';
 
 /**
-* Contains the URL including the jwt to use to trigger finalization of the consent request in the consenting serviceprovider (can be called by ao web or by requesting service provider) The jwt payload is of type AHConsReqInitializeAhToSp2JWT
+* Contains the URL including the jwt to use to trigger finalization of the consent request in the consenting serviceprovider (can be called by ao web or by requesting service provider) The jwt payload is of type SAConsReqInitializeSaToSp2JWT
 */
 export class ConsentRequestUrlDTO {
     'consentRequestURL': string;

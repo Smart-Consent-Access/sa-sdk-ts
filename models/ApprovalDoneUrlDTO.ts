@@ -13,7 +13,7 @@
 import { HttpFile } from '../http/http';
 
 /**
-* Contains the URL including the jwt to use to trigger finalization of the consent approval in the consenting|requesting serviceprovider. The jwt payload is of type AHConsApprovalInitializeSp2ToAhJWT for consenting serviceprovider or AHConsApprovalFinalizeSp1ToAhJWT for requesting serviceprovider
+* Contains the URL including the jwt to use to trigger finalization of the consent approval in the consenting|requesting serviceprovider. The jwt payload is of type SAConsApprovalInitializeSp2ToSaJWT for consenting serviceprovider or SAConsApprovalFinalizeSp1ToSaJWT for requesting serviceprovider
 */
 export class ApprovalDoneUrlDTO {
     'approvalDoneURL': string;

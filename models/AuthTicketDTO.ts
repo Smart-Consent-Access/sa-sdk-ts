@@ -13,7 +13,7 @@
 import { HttpFile } from '../http/http';
 
 /**
-* Contains a signed jwt issued and signed by AO. The jwt payload is of type AHAuthTicket
+* Contains a signed jwt issued and signed by AO. The jwt payload is of type SAAuthTicket
 */
 export class AuthTicketDTO {
     'authTicket': string;
