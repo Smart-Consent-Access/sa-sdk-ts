@@ -1,30 +1,63 @@
-## sa-sdk-ts@1.0.0
+# Smart Access SDK for Typescript
 
-This generator creates TypeScript/JavaScript client that utilizes fetch-api. 
+##  Install
 
-### Building
+`npm install @smart-consent-access/sa-sdk-ts`
 
-To build and compile the typescript sources to javascript use:
+`import SmartAccess from "@smart-consent-access/sa-sdk-ts"`
+
+## Usage
+
+Create a .env with the following information: 
+
+SA_SERVICE_PROVIDER_PRIVATE_KEY_PATH="path_to_private_key.pem"`
+SA_PUBLIC_KEY_PATH="path_to_public_key.pem"
+SA_BASE_URL_API="https://ao.sandbox.smartconsent.se/api/v1"
+SA_BASE_URL_WEB="https://ao.sandbox.smartconsent.se"
+SA_SERVICE_PROVIDER_ID="your_service_provider_id"
+
+`const SA = new SmartAccess()`
+
+### Classes
+
+SA.policyEnforcement -> functions for validation and policy enforcement
+SA.consentSearch -> help function for searching through consent requests that have a resource
+SA.consentFlows ->  creates and opens consent requests and consent JWTs
+SA.serviceProviders -> SA endpoints for service provider
+SA.consentRequests -> SA endpoints for consentRequests
+SA.consents -> SA endpoints for consents
+
+### Examples
+
+#### Creating a consent request initialization:
+
 ```
-npm install
-npm run build
+const requestInitialization = await SA.consentFlows.createConsentRequestInitialization({
+    consentServiceProviderId: string,
+    requestPrincipalId: string,
+    requestPrincipalName: string,
+    actions: string[],
+    resources: string[],
+    conditions: string[],
+    serviceProviderId: string,
+    termsAndConditions: string,
+});
 ```
 
-### Publishing
-
-First build the package then run ```npm publish```
-
-### Consuming
-
-navigate to the folder of your consuming project and run one of the following commands.
-
-_published:_
-
 ```
-npm install sa-sdk-ts@1.0.0 --save
+const result = await SA.consentRequests.flowConsentRequestInitialize({
+    requestingToken: requestInitialization.token,
+});
 ```
 
-_unPublished (not recommended):_
+#### Open a consent request initialization ticket
 
-```
-npm install PATH_TO_GENERATED_PACKAGE --save
+`const openResult = await SA.consentFlows.receiveConsentRequestInitialization(ticket);`
+
+#### Creating a auth ticket
+
+`await SA.consents.createAuthZTicketForConsent(consentId);`
+
+#### Validating a auth ticket
+
+`await SA.policyEnforcement.ticketAudit({ticket: ticket});`
