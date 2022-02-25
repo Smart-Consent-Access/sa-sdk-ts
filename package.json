@@ -1,6 +1,6 @@
 {
   "name": "@smart-consent-access/sa-sdk-ts",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "OpenAPI client for sa-sdk-ts",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [
