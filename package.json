@@ -1,6 +1,6 @@
 {
   "name": "@smart-consent-access/sa-sdk-ts",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "OpenAPI client for sa-sdk-ts",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [
@@ -19,7 +19,7 @@
     "test": "jest --setupFiles dotenv/config"
   },
   "dependencies": {
-    "@smart-consent-access/sa-typings": "^1.0.1",
+    "@smart-consent-access/sa-typings": "^1.0.2",
     "node-fetch": "^2.6.0",
     "@types/node-fetch": "^2.5.7",
     "@types/jsonwebtoken": "^8.5.5",
@@ -37,7 +37,7 @@
     "@types/node": "^16.11.1",
     "@types/node-fetch": "^2.5.7",
     "@types/url-parse": "^1.4.3",
-    "jest": "26.6.3",
-    "ts-jest": "26.5.6"
+    "jest": "26.6.0",
+    "ts-jest": "^26.5.6"
   }
 }
