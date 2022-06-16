@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 
+import { ConsentType } from './ConsentType';
 import { PolicySummaryDTO } from './PolicySummaryDTO';
 import { HttpFile } from '../http/http';
 
 export class ConsentSummaryDTO {
     'id': string;
+    'type': ConsentType;
     'consPrincipalId': string;
     'consPrincipalName': string;
     'policy'?: Array<PolicySummaryDTO>;
@@ -26,6 +28,12 @@ export class ConsentSummaryDTO {
             "name": "id",
             "baseName": "id",
             "type": "string",
+            "format": ""
+        },
+        {
+            "name": "type",
+            "baseName": "type",
+            "type": "ConsentType",
             "format": ""
         },
         {

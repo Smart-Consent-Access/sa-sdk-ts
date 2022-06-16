@@ -8,30 +8,26 @@
 
 ## Usage
 
-Create a .env with the following information: 
+Create a .env with the following information:
 
-```
-SA_SERVICE_PROVIDER_PRIVATE_KEY_PATH="path_to_private_key.pem"
-SA_PUBLIC_KEY_PATH="path_to_public_key.pem"
-SA_BASE_URL_API="https://ao.sandbox.smartconsent.se/api/v1"
-SA_BASE_URL_WEB="https://ao.sandbox.smartconsent.se"
+SA_SERVICE_PROVIDER_PRIVATE_KEY_PATH="path_to_private_key.pem"`
+SA_BASE_URL_API="https://sa.sandbox.smartconsent.se/api/v1"
+SA_BASE_URL_WEB="https://sa.sandbox.smartconsent.se"
 SA_SERVICE_PROVIDER_ID="your_service_provider_id"
-```
 
 `const SA = new SmartAccess()`
+
+Initialize instance
+
+`await SA.init()`
 
 ### Classes
 
 SA.policyEnforcement -> functions for validation and policy enforcement
-
-SA.consentSearch -> help function for searching for consents and consent requests
-
+SA.consentSearch -> help function for searching through consent requests that have a resource
 SA.consentFlows ->  creates and opens consent requests and consent JWTs
-
 SA.serviceProviders -> SA endpoints for service provider
-
 SA.consentRequests -> SA endpoints for consentRequests
-
 SA.consents -> SA endpoints for consents
 
 ### Examples

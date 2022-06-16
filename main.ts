@@ -1,88 +1,113 @@
-import { createConfiguration } from "./configuration";
+import { Configuration, createConfiguration } from "./configuration";
 import {
-  PromiseBackofficeInternalAdminApi as BackofficeInternalAdminApi,
   PromiseConsentRequestsApi as ConsentRequestsApi,
   PromiseConsentsApi as ConsentsApi,
   PromiseServiceProvidersApi as ServiceProvidersApi,
+  PromiseActionTemplatesApi as ActionTemplatesApi
 } from "./types/PromiseAPI";
 import { ServerConfiguration } from "./servers";
-import { sign } from "jsonwebtoken";
+import { SignJWT } from "jose";
 import * as fs from "fs";
-import { ConsentSearch, PolicyEnforcement, ConsentFlows } from "./index";
-import { ConfigFileInput } from "./types/configFileInput";
+import { ConsentSearch, PolicyEnforcement, ConsentFlows, SmartAccessHelper } from "./index";
+import { createPrivateKey } from "crypto";
+
+export interface SaBaseConfig {
+  saBaseUrl: string;
+  serviceProviderPrivateKey: string;
+  saPublicKey: string;
+  serviceProviderId: string;
+}
 
 class SmartAccess {
-  public policyEnforcement;
-  public consentSearch;
-  public consentFlows;
-  public serviceProviders;
-  public backofficeInternalAdmin;
-  public consentRequests;
-  public consents;
+  public policyEnforcement!: PolicyEnforcement;
+  public consentSearch!: ConsentSearch;
+  public consentFlows!: ConsentFlows;
+  public serviceProviders!: ServiceProvidersApi;
+  public consentRequests!: ConsentRequestsApi;
+  public consents!: ConsentsApi;
+  public actionTemplates!: ActionTemplatesApi;
+  public smartAccessUtils!: SmartAccessHelper;
+  private saServiceProviderId = process.env.SA_SA_SERVICE_PROVIDER_ID || "19fa2355-70f0-428d-8ee3-601773d50728";
+  private saBaseUrlAPI: string = '';
+  private SDKAssumedServiceProviderId: string;
+  private initialized: boolean = false;
 
-  constructor(serviceProviderId?: string, privateKeyPath?: string) {
+  constructor(private serviceProviderId?: string, private privateKeyPath?: string) {
     // Initialize the SA SDK with config values from ENV
-    const saServiceProviderId = serviceProviderId || process.env.SA_SERVICE_PROVIDER_ID || ""; // TODO: Must be set, no fallback
-    if (!saServiceProviderId) throw new Error("No ServiceProviderId");
+    this.SDKAssumedServiceProviderId = this.serviceProviderId || process.env.SA_SERVICE_PROVIDER_ID || ""; // TODO: Must be set, no fallback
+    if (!this.SDKAssumedServiceProviderId) throw new Error("No ServiceProviderId");
+  }
 
-    const saBaseUrlAPI =
+  async init(): Promise<void> {
+    if (this.initialized) {
+      return;
+    }
+    this.saBaseUrlAPI =
       process.env.SA_BASE_URL_API || "http://localhost:3000/api/v1"; // TODO: Prod URL
     const saBaseUrlWeb = process.env.SA_BASE_URL_WEB || "http://localhost:8080"; // TODO: Prod URL
-    const saPrivKey =
+    const spPrivKey =
       process.env.SA_SERVICE_PROVIDER_PRIVATE_KEY ||
       fs
         .readFileSync(
-          privateKeyPath ||
+          this.privateKeyPath ||
             process.env.SA_SERVICE_PROVIDER_PRIVATE_KEY_PATH ||
             "./config/aoPrivateKey.pem"
         )
         .toString();
-    const saPubKey =
-      process.env.SA_PUBLIC_KEY ||
-      fs
-        .readFileSync(
-          process.env.SA_PUBLIC_KEY_PATH || "./config/aoPublicKey.pem"
-        )
-        .toString(); // TODO: More explicit, no guessing
 
-    const saAuthorizationJwt = sign(
-      {
-        iss: saServiceProviderId,
-        aud: "Association Orchestrator",
-        kind: "API_AUTHORIZATION",
-        scope: [
-          "serviceprovider:info",
-          "serviceprovider:flow",
-          "serviceprovider:ticket",
-        ],
-      },
-      saPrivKey,
-      { algorithm: "RS256" }
-    );
+    const saAuthorizationJwt = await new SignJWT({
+      iss: this.SDKAssumedServiceProviderId,
+      aud: "Association Orchestrator",
+      kind: "API_AUTHORIZATION",
+      scope: [
+        "serviceprovider:info",
+        "serviceprovider:flow",
+        "serviceprovider:ticket",
+      ],
+    }).setProtectedHeader({ alg: "RS256" })
+      .setIssuedAt(Math.floor(new Date().getTime() / 1000))
+      .sign(createPrivateKey(spPrivKey));
 
     // Prepare the AO object, which is the entry-point to the SDK
     const saSdkApiConf = createConfiguration({
-      baseServer: new ServerConfiguration(saBaseUrlAPI, {}),
+      baseServer: new ServerConfiguration(this.saBaseUrlAPI, {}),
       authMethods: { jwt: `Bearer ${saAuthorizationJwt}` },
     });
 
-    const saBaseConf: ConfigFileInput = {
+    const serviceProvidersApi = new ServiceProvidersApi(saSdkApiConf);
+
+    let saPubKey: string;
+    if (process.env.ENV === "test") {
+      saPubKey = fs.readFileSync(process.env.TEST_SA_PUBLIC_KEY_PATH || "").toString();
+    } else {
+      saPubKey = await serviceProvidersApi.getServiceProvider(this.saServiceProviderId).then(res => res.publicKey) || '';
+    }
+
+    const saBaseConf: SaBaseConfig = {
       saBaseUrl: saBaseUrlWeb,
-      serviceProviderPrivateKey: saPrivKey,
+      serviceProviderPrivateKey: spPrivKey,
       saPublicKey: saPubKey,
-      serviceProviderId: saServiceProviderId,
+      serviceProviderId: this.SDKAssumedServiceProviderId,
     };
 
-    const serviceProvidersApi = new ServiceProvidersApi(saSdkApiConf);
     const consentRequestsApi = new ConsentRequestsApi(saSdkApiConf);
 
     this.policyEnforcement = new PolicyEnforcement(saBaseConf);
-    this.consentSearch = new ConsentSearch(consentRequestsApi, saBaseConf);
+    this.consentSearch = new ConsentSearch();
     this.consentFlows = new ConsentFlows(saBaseConf);
     this.serviceProviders = serviceProvidersApi;
-    this.backofficeInternalAdmin = new BackofficeInternalAdminApi(saSdkApiConf); // TODO: Not for public use
     this.consentRequests = consentRequestsApi;
     this.consents = new ConsentsApi(saSdkApiConf);
+    this.actionTemplates = new ActionTemplatesApi(saSdkApiConf);
+    this.smartAccessUtils = new SmartAccessHelper(saBaseConf);
+    this.initialized = true;
+  }
+
+  getApiConfigWithAuth(authTicket: string): Configuration {
+    return createConfiguration({
+      baseServer: new ServerConfiguration(this.saBaseUrlAPI, {}),
+      authMethods: { jwt: `Bearer ${authTicket}` },
+    });
   }
 }
 

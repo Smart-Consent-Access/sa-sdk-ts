@@ -21,6 +21,7 @@ export class ServiceProviderPatchDTO {
     'finalizeConsentRequestUrl'?: string;
     'initiateConsentUrl'?: string;
     'finalizeConsentUrl'?: string;
+    'allowUndefinedActions'?: boolean;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -71,6 +72,12 @@ export class ServiceProviderPatchDTO {
             "name": "finalizeConsentUrl",
             "baseName": "finalizeConsentUrl",
             "type": "string",
+            "format": ""
+        },
+        {
+            "name": "allowUndefinedActions",
+            "baseName": "allowUndefinedActions",
+            "type": "boolean",
             "format": ""
         }    ];
 

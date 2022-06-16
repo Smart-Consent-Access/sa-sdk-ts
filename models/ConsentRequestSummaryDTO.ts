@@ -27,6 +27,10 @@ export class ConsentRequestSummaryDTO {
     'reqPrincipalName': string;
     'consServiceProviderId': string;
     'consents'?: Array<ConsentSummaryDTO>;
+    'numApproved': number;
+    'numRejected': number;
+    'responseTotalStatus': ConsentRequestSummaryDTOResponseTotalStatusEnum;
+    'numAffectedUsers': number;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -102,6 +106,30 @@ export class ConsentRequestSummaryDTO {
             "baseName": "consents",
             "type": "Array<ConsentSummaryDTO>",
             "format": ""
+        },
+        {
+            "name": "numApproved",
+            "baseName": "numApproved",
+            "type": "number",
+            "format": "double"
+        },
+        {
+            "name": "numRejected",
+            "baseName": "numRejected",
+            "type": "number",
+            "format": "double"
+        },
+        {
+            "name": "responseTotalStatus",
+            "baseName": "responseTotalStatus",
+            "type": "ConsentRequestSummaryDTOResponseTotalStatusEnum",
+            "format": ""
+        },
+        {
+            "name": "numAffectedUsers",
+            "baseName": "numAffectedUsers",
+            "type": "number",
+            "format": "double"
         }    ];
 
     static getAttributeTypeMap() {
@@ -111,4 +139,7 @@ export class ConsentRequestSummaryDTO {
     public constructor() {
     }
 }
+
+
+export type ConsentRequestSummaryDTOResponseTotalStatusEnum = "PENDING" | "COMPLETED" ;
 

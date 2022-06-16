@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**flowConsentRequestInitialize**](ConsentRequestsApi.md#flowConsentRequestInitialize) | **POST** /consent_requests/flow_consent_req_initialize | 
 [**getConsentRequest**](ConsentRequestsApi.md#getConsentRequest) | **GET** /consent_requests/{consentRequestId} | 
 [**getConsentRequests**](ConsentRequestsApi.md#getConsentRequests) | **GET** /consent_requests | 
+[**searchConsentRequests**](ConsentRequestsApi.md#searchConsentRequests) | **POST** /consent_requests/search | 
 
 
 # **deleteId**
@@ -63,6 +64,8 @@ Name | Type | Description  | Notes
 |-------------|-------------|------------------|
 **204** | No content |  -  |
 **401** | Authentication failed |  -  |
+**403** | Authorization failed |  -  |
+**404** | Resource not found |  -  |
 **422** | Validation failed |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
@@ -123,7 +126,7 @@ No authorization required
 **401** | Authentication failed |  -  |
 **403** | Authorization failed |  -  |
 **404** | Resource not found |  -  |
-**422** | Validation failed |  -  |
+**422** | Actions, resources or conditions are not valid |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -183,7 +186,7 @@ No authorization required
 **401** | Authentication failed |  -  |
 **403** | Authorization failed |  -  |
 **404** | Resource not found |  -  |
-**422** | Validation failed |  -  |
+**422** | Actions, resources or conditions are not valid |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -297,6 +300,79 @@ Name | Type | Description  | Notes
 |-------------|-------------|------------------|
 **200** | Ok |  -  |
 **401** | Authentication failed |  -  |
+**422** | Validation failed |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+# **searchConsentRequests**
+> PaginationResultDTOConsentRequestSearchResultDTO searchConsentRequests(searchConsentRequestsDTO)
+
+Search for consent requests given some search parameters. See SearchConsentRequestsDTO for details on parameters. Will return a list of matching consent requests
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .ConsentRequestsApi(configuration);
+
+let body:.ConsentRequestsApiSearchConsentRequestsRequest = {
+  // SearchConsentRequestsDTO | The search parameters
+  searchConsentRequestsDTO: {
+    skip: 3.14,
+    take: 3.14,
+    searchQuery: "searchQuery_example",
+    fields: {
+      stopCreatedAt: "stopCreatedAt_example",
+      startCreatedAt: "startCreatedAt_example",
+      status: "status_example",
+      consServiceProviderId: "consServiceProviderId_example",
+      reqServiceProviderId: "reqServiceProviderId_example",
+    },
+    sort: {
+      status: "asc",
+      updatedAt: "asc",
+      createdAt: "asc",
+    },
+  },
+};
+
+apiInstance.searchConsentRequests(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **searchConsentRequestsDTO** | **SearchConsentRequestsDTO**| The search parameters |
+
+
+### Return type
+
+**PaginationResultDTOConsentRequestSearchResultDTO**
+
+### Authorization
+
+[jwt](README.md#jwt)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Ok |  -  |
+**401** | Authentication failed |  -  |
+**403** | Authorization failed |  -  |
 **422** | Validation failed |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)

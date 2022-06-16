@@ -2,103 +2,109 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import * as models from '../models/all';
 import { Configuration} from '../configuration'
 
+import { ActionTemplateDTO } from '../models/ActionTemplateDTO';
+import { ActionValidationErrorDTO } from '../models/ActionValidationErrorDTO';
 import { ApiErrorDTO } from '../models/ApiErrorDTO';
 import { ApprovalDoneUrlDTO } from '../models/ApprovalDoneUrlDTO';
 import { AuthTicketDTO } from '../models/AuthTicketDTO';
+import { ConditionTemplateDTO } from '../models/ConditionTemplateDTO';
 import { ConsentApprovalFinalizeBody } from '../models/ConsentApprovalFinalizeBody';
 import { ConsentApprovalInitializeBody } from '../models/ConsentApprovalInitializeBody';
 import { ConsentDTO } from '../models/ConsentDTO';
 import { ConsentRequestFinalizeBody } from '../models/ConsentRequestFinalizeBody';
 import { ConsentRequestFinalizeUrlDTO } from '../models/ConsentRequestFinalizeUrlDTO';
+import { ConsentRequestSearchResultDTO } from '../models/ConsentRequestSearchResultDTO';
+import { ConsentRequestSearchResultDTOConsents } from '../models/ConsentRequestSearchResultDTOConsents';
 import { ConsentRequestSummaryDTO } from '../models/ConsentRequestSummaryDTO';
 import { ConsentRequestTokenBody } from '../models/ConsentRequestTokenBody';
 import { ConsentRequestUrlDTO } from '../models/ConsentRequestUrlDTO';
+import { ConsentSearchResultDTO } from '../models/ConsentSearchResultDTO';
 import { ConsentSummaryDTO } from '../models/ConsentSummaryDTO';
+import { ConsentType } from '../models/ConsentType';
+import { CreateActionTemplateDTO } from '../models/CreateActionTemplateDTO';
+import { CreateConditionTemplateDTO } from '../models/CreateConditionTemplateDTO';
+import { CreateResourceTagTemplateDTO } from '../models/CreateResourceTagTemplateDTO';
+import { CreateResourceTemplateDTO } from '../models/CreateResourceTemplateDTO';
 import { DebugDTO } from '../models/DebugDTO';
 import { DebugDTOExampleKeyPair } from '../models/DebugDTOExampleKeyPair';
 import { LegalEntityDTO } from '../models/LegalEntityDTO';
 import { LocalizedStringDTO } from '../models/LocalizedStringDTO';
+import { PaginationResultDTOConsentRequestSearchResultDTO } from '../models/PaginationResultDTOConsentRequestSearchResultDTO';
+import { PaginationResultDTOConsentSearchResultDTO } from '../models/PaginationResultDTOConsentSearchResultDTO';
 import { PolicyActionDTO } from '../models/PolicyActionDTO';
 import { PolicyConditionDTO } from '../models/PolicyConditionDTO';
 import { PolicyDTO } from '../models/PolicyDTO';
 import { PolicyResourceDTO } from '../models/PolicyResourceDTO';
 import { PolicySummaryDTO } from '../models/PolicySummaryDTO';
 import { ResourceTagDTO } from '../models/ResourceTagDTO';
+import { ResourceTagTemplateDTO } from '../models/ResourceTagTemplateDTO';
+import { ResourceTemplateDTO } from '../models/ResourceTemplateDTO';
+import { SearchConsentRequestsDTO } from '../models/SearchConsentRequestsDTO';
+import { SearchConsentRequestsDTOFields } from '../models/SearchConsentRequestsDTOFields';
+import { SearchConsentsDTO } from '../models/SearchConsentsDTO';
+import { SearchConsentsDTOFields } from '../models/SearchConsentsDTOFields';
+import { SearchConsentsDTOSort } from '../models/SearchConsentsDTOSort';
 import { ServiceProviderDTO } from '../models/ServiceProviderDTO';
 import { ServiceProviderPatchDTO } from '../models/ServiceProviderPatchDTO';
+import { SingleProviderConsentDTO } from '../models/SingleProviderConsentDTO';
 import { ValidationErrorDTO } from '../models/ValidationErrorDTO';
-import { ObservableBackofficeInternalAdminApi } from './ObservableAPI';
+import { ObservableActionTemplatesApi } from './ObservableAPI';
 
-import { BackofficeInternalAdminApiRequestFactory, BackofficeInternalAdminApiResponseProcessor} from "../apis/BackofficeInternalAdminApi";
-export class PromiseBackofficeInternalAdminApi {
-    private api: ObservableBackofficeInternalAdminApi
+import { ActionTemplatesApiRequestFactory, ActionTemplatesApiResponseProcessor} from "../apis/ActionTemplatesApi";
+export class PromiseActionTemplatesApi {
+    private api: ObservableActionTemplatesApi
 
     public constructor(
         configuration: Configuration,
-        requestFactory?: BackofficeInternalAdminApiRequestFactory,
-        responseProcessor?: BackofficeInternalAdminApiResponseProcessor
+        requestFactory?: ActionTemplatesApiRequestFactory,
+        responseProcessor?: ActionTemplatesApiResponseProcessor
     ) {
-        this.api = new ObservableBackofficeInternalAdminApi(configuration, requestFactory, responseProcessor);
+        this.api = new ObservableActionTemplatesApi(configuration, requestFactory, responseProcessor);
     }
 
     /**
-     * @param consentRequestId 
+     * Deletes a action template
+     * @param actionTemplateId The action template id in UUID format
      */
-    public deleteConsentRequest(consentRequestId: string, _options?: Configuration): Promise<void> {
-        const result = this.api.deleteConsentRequest(consentRequestId, _options);
+    public deleteActionTemplate(actionTemplateId: string, _options?: Configuration): Promise<void> {
+        const result = this.api.deleteActionTemplate(actionTemplateId, _options);
         return result.toPromise();
     }
 
     /**
-     * @param serviceProviderId 
+     * Fetch all action template hierarchy's on the given service provider
+     * @param serviceProviderId The service provider id in UUID format
      */
-    public deleteServiceProvider(serviceProviderId: string, _options?: Configuration): Promise<void> {
-        const result = this.api.deleteServiceProvider(serviceProviderId, _options);
+    public getAllActionTemplatesForSP(serviceProviderId: string, _options?: Configuration): Promise<Array<ActionTemplateDTO>> {
+        const result = this.api.getAllActionTemplatesForSP(serviceProviderId, _options);
         return result.toPromise();
     }
 
     /**
+     * Fetch the action template matching the ID
+     * @param actionTemplateId The action template id in UUID format
      */
-    public getAllConsentRequests(_options?: Configuration): Promise<Array<ConsentRequestSummaryDTO>> {
-        const result = this.api.getAllConsentRequests(_options);
+    public getOneActionTemplateById(actionTemplateId: string, _options?: Configuration): Promise<ActionTemplateDTO> {
+        const result = this.api.getOneActionTemplateById(actionTemplateId, _options);
         return result.toPromise();
     }
 
     /**
+     * Creates a new action template hierarchy on a service provider
+     * @param createActionTemplateDTO 
      */
-    public getAllConsents(_options?: Configuration): Promise<Array<ConsentDTO>> {
-        const result = this.api.getAllConsents(_options);
+    public postActionTemplate(createActionTemplateDTO: CreateActionTemplateDTO, _options?: Configuration): Promise<ActionTemplateDTO> {
+        const result = this.api.postActionTemplate(createActionTemplateDTO, _options);
         return result.toPromise();
     }
 
     /**
+     * Updates a existing action template by replacing it with a new version
+     * @param actionTemplateId The action template id in UUID format
+     * @param createActionTemplateDTO 
      */
-    public getAllServiceProviders(_options?: Configuration): Promise<Array<ServiceProviderDTO>> {
-        const result = this.api.getAllServiceProviders(_options);
-        return result.toPromise();
-    }
-
-    /**
-     */
-    public getDebug(_options?: Configuration): Promise<DebugDTO> {
-        const result = this.api.getDebug(_options);
-        return result.toPromise();
-    }
-
-    /**
-     * @param serviceProviderId 
-     * @param serviceProviderPatchDTO 
-     */
-    public patchServiceProviders(serviceProviderId: string, serviceProviderPatchDTO: ServiceProviderPatchDTO, _options?: Configuration): Promise<ServiceProviderDTO> {
-        const result = this.api.patchServiceProviders(serviceProviderId, serviceProviderPatchDTO, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * @param serviceProviderDTO 
-     */
-    public postServiceProviders(serviceProviderDTO: ServiceProviderDTO, _options?: Configuration): Promise<ServiceProviderDTO> {
-        const result = this.api.postServiceProviders(serviceProviderDTO, _options);
+    public updateActionTemplate(actionTemplateId: string, createActionTemplateDTO: CreateActionTemplateDTO, _options?: Configuration): Promise<ActionTemplateDTO> {
+        const result = this.api.updateActionTemplate(actionTemplateId, createActionTemplateDTO, _options);
         return result.toPromise();
     }
 
@@ -166,6 +172,15 @@ export class PromiseConsentRequestsApi {
         return result.toPromise();
     }
 
+    /**
+     * Search for consent requests given some search parameters. See SearchConsentRequestsDTO for details on parameters. Will return a list of matching consent requests
+     * @param searchConsentRequestsDTO The search parameters
+     */
+    public searchConsentRequests(searchConsentRequestsDTO: SearchConsentRequestsDTO, _options?: Configuration): Promise<PaginationResultDTOConsentRequestSearchResultDTO> {
+        const result = this.api.searchConsentRequests(searchConsentRequestsDTO, _options);
+        return result.toPromise();
+    }
+
 
 }
 
@@ -204,7 +219,7 @@ export class PromiseConsentsApi {
     }
 
     /**
-     * Initialize a consent approval as the consenting service provider. The information about the request to approve is specified in the request body with a signed JWT which will be verified to be signed by the calling/consenting service provider
+     * Initialize a consent approval or rejection as the consenting service provider. The information about the request to approve or reject is specified in the request body with a signed JWT which will be verified to be signed by the calling/consenting service provider. A consent request can be approved or rejected by more than one consenting principal (legal entity) by initiating more consents
      * @param consentApprovalInitializeBody The signed jwt with payload of type SAConsApprovalInitializeSp2ToSaJWT
      */
     public flowConsentApprovalInitialize(consentApprovalInitializeBody: ConsentApprovalInitializeBody, _options?: Configuration): Promise<ApprovalDoneUrlDTO> {
@@ -218,6 +233,24 @@ export class PromiseConsentsApi {
      */
     public getConsent(consentId: string, _options?: Configuration): Promise<ConsentDTO> {
         const result = this.api.getConsent(consentId, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Search for consents (approvals) given some search parameters. See SearchConsentsDTO for details on parameters. Will return a list of matching consents
+     * @param searchConsentsDTO The search parameters
+     */
+    public searchConsents(searchConsentsDTO: SearchConsentsDTO, _options?: Configuration): Promise<PaginationResultDTOConsentSearchResultDTO> {
+        const result = this.api.searchConsents(searchConsentsDTO, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Create a single provider consent. This is a complete consent approval for some action, resources and conditions, with your own serviceprovider as both requester and consenter
+     * @param singleProviderConsentDTO Info about the consent to create
+     */
+    public singleProviderConsent(singleProviderConsentDTO: SingleProviderConsentDTO, _options?: Configuration): Promise<string> {
+        const result = this.api.singleProviderConsent(singleProviderConsentDTO, _options);
         return result.toPromise();
     }
 
@@ -241,11 +274,39 @@ export class PromiseServiceProvidersApi {
     }
 
     /**
+     * Soft deletes (set to INACTIVE) a service provider
+     * @param serviceProviderId The service provider id in UUID format
+     */
+    public deleteServiceProvider(serviceProviderId: string, _options?: Configuration): Promise<void> {
+        const result = this.api.deleteServiceProvider(serviceProviderId, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Fetch information about the given service provider
      * @param id The service provider id in UUID format
      */
     public getServiceProvider(id: string, _options?: Configuration): Promise<ServiceProviderDTO> {
         const result = this.api.getServiceProvider(id, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Updates a service provider with new data. Only updates explicitly set new values, rest is left as is
+     * @param serviceProviderId The service provider id in UUID format
+     * @param serviceProviderPatchDTO 
+     */
+    public patchServiceProviders(serviceProviderId: string, serviceProviderPatchDTO: ServiceProviderPatchDTO, _options?: Configuration): Promise<ServiceProviderDTO> {
+        const result = this.api.patchServiceProviders(serviceProviderId, serviceProviderPatchDTO, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Creates a new service provider in SA
+     * @param serviceProviderDTO 
+     */
+    public postServiceProviders(serviceProviderDTO: ServiceProviderDTO, _options?: Configuration): Promise<ServiceProviderDTO> {
+        const result = this.api.postServiceProviders(serviceProviderDTO, _options);
         return result.toPromise();
     }
 

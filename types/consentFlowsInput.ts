@@ -1,4 +1,4 @@
-import { LocalizedString } from "@smart-consent-access/sa-typings";
+import { LocalizedString, ActionString, ConditionString, ResourceString } from "@smart-consent-access/sa-typings";
 
 export interface ConsentFlowCreateOutput {
   url: string;
@@ -15,9 +15,9 @@ export interface InitiateConsentRequestInput {
   consentServiceProviderId: string;
   requestPrincipalId?: string;
   requestPrincipalName?: string;
-  actions?: string[];
-  resources?: string[];
-  conditions?: string[];
+  actions?: ActionString[];
+  resources?: ResourceString[];
+  conditions?: ConditionString[];
   expirationTime?: string;
   serviceProviderId?: string;
   termsAndConditions?: string;
@@ -26,19 +26,30 @@ export interface InitiateConsentRequestInput {
 
 export interface FinalizeConsentRequestInput {
   consentRequestId: string;
-  actions?: string[];
-  resources?: string[];
-  conditions?: string[];
+  actions?: ActionString[];
+  resources?: ResourceString[];
+  conditions?: ConditionString[];
   expirationTime?: string;
+  numAffectedUsers: number;
 }
 
 export interface InitiateConsentApprovalInput {
   consentRequestId: string;
   consentPrincipalId?: string;
   consentPrincipalName?: string;
-  actions?: string[];
-  resources?: string[];
-  conditions?: string[];
+  actions?: ActionString[];
+  resources?: ResourceString[];
+  conditions?: ConditionString[];
+  expirationTime?: string;
+}
+
+export interface InitiateConsentRejectionInput {
+  consentRequestId: string;
+  consentPrincipalId?: string;
+  consentPrincipalName?: string;
+  actions?: ActionString[];
+  resources?: ResourceString[];
+  conditions?: ConditionString[];
   expirationTime?: string;
 }
 

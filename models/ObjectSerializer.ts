@@ -1,53 +1,95 @@
+export * from './ActionTemplateDTO';
+export * from './ActionValidationErrorDTO';
 export * from './ApiErrorDTO';
 export * from './ApprovalDoneUrlDTO';
 export * from './AuthTicketDTO';
+export * from './ConditionTemplateDTO';
 export * from './ConsentApprovalFinalizeBody';
 export * from './ConsentApprovalInitializeBody';
 export * from './ConsentDTO';
 export * from './ConsentRequestFinalizeBody';
 export * from './ConsentRequestFinalizeUrlDTO';
+export * from './ConsentRequestSearchResultDTO';
+export * from './ConsentRequestSearchResultDTOConsents';
 export * from './ConsentRequestSummaryDTO';
 export * from './ConsentRequestTokenBody';
 export * from './ConsentRequestUrlDTO';
+export * from './ConsentSearchResultDTO';
 export * from './ConsentSummaryDTO';
+export * from './ConsentType';
+export * from './CreateActionTemplateDTO';
+export * from './CreateConditionTemplateDTO';
+export * from './CreateResourceTagTemplateDTO';
+export * from './CreateResourceTemplateDTO';
 export * from './DebugDTO';
 export * from './DebugDTOExampleKeyPair';
 export * from './LegalEntityDTO';
 export * from './LocalizedStringDTO';
+export * from './PaginationResultDTOConsentRequestSearchResultDTO';
+export * from './PaginationResultDTOConsentSearchResultDTO';
 export * from './PolicyActionDTO';
 export * from './PolicyConditionDTO';
 export * from './PolicyDTO';
 export * from './PolicyResourceDTO';
 export * from './PolicySummaryDTO';
 export * from './ResourceTagDTO';
+export * from './ResourceTagTemplateDTO';
+export * from './ResourceTemplateDTO';
+export * from './SearchConsentRequestsDTO';
+export * from './SearchConsentRequestsDTOFields';
+export * from './SearchConsentsDTO';
+export * from './SearchConsentsDTOFields';
+export * from './SearchConsentsDTOSort';
 export * from './ServiceProviderDTO';
 export * from './ServiceProviderPatchDTO';
+export * from './SingleProviderConsentDTO';
 export * from './ValidationErrorDTO';
 
+import { ActionTemplateDTO } from './ActionTemplateDTO';
+import { ActionValidationErrorDTO } from './ActionValidationErrorDTO';
 import { ApiErrorDTO } from './ApiErrorDTO';
 import { ApprovalDoneUrlDTO } from './ApprovalDoneUrlDTO';
 import { AuthTicketDTO } from './AuthTicketDTO';
+import { ConditionTemplateDTO } from './ConditionTemplateDTO';
 import { ConsentApprovalFinalizeBody } from './ConsentApprovalFinalizeBody';
 import { ConsentApprovalInitializeBody } from './ConsentApprovalInitializeBody';
 import { ConsentDTO } from './ConsentDTO';
 import { ConsentRequestFinalizeBody } from './ConsentRequestFinalizeBody';
 import { ConsentRequestFinalizeUrlDTO } from './ConsentRequestFinalizeUrlDTO';
-import { ConsentRequestSummaryDTO } from './ConsentRequestSummaryDTO';
+import { ConsentRequestSearchResultDTO              , ConsentRequestSearchResultDTOResponseTotalStatusEnum        } from './ConsentRequestSearchResultDTO';
+import { ConsentRequestSearchResultDTOConsents } from './ConsentRequestSearchResultDTOConsents';
+import { ConsentRequestSummaryDTO              , ConsentRequestSummaryDTOResponseTotalStatusEnum    } from './ConsentRequestSummaryDTO';
 import { ConsentRequestTokenBody } from './ConsentRequestTokenBody';
 import { ConsentRequestUrlDTO } from './ConsentRequestUrlDTO';
+import { ConsentSearchResultDTO } from './ConsentSearchResultDTO';
 import { ConsentSummaryDTO } from './ConsentSummaryDTO';
+import { ConsentType } from './ConsentType';
+import { CreateActionTemplateDTO } from './CreateActionTemplateDTO';
+import { CreateConditionTemplateDTO } from './CreateConditionTemplateDTO';
+import { CreateResourceTagTemplateDTO } from './CreateResourceTagTemplateDTO';
+import { CreateResourceTemplateDTO } from './CreateResourceTemplateDTO';
 import { DebugDTO } from './DebugDTO';
 import { DebugDTOExampleKeyPair } from './DebugDTOExampleKeyPair';
 import { LegalEntityDTO } from './LegalEntityDTO';
 import { LocalizedStringDTO } from './LocalizedStringDTO';
+import { PaginationResultDTOConsentRequestSearchResultDTO } from './PaginationResultDTOConsentRequestSearchResultDTO';
+import { PaginationResultDTOConsentSearchResultDTO } from './PaginationResultDTOConsentSearchResultDTO';
 import { PolicyActionDTO } from './PolicyActionDTO';
 import { PolicyConditionDTO } from './PolicyConditionDTO';
 import { PolicyDTO } from './PolicyDTO';
 import { PolicyResourceDTO } from './PolicyResourceDTO';
 import { PolicySummaryDTO } from './PolicySummaryDTO';
 import { ResourceTagDTO } from './ResourceTagDTO';
+import { ResourceTagTemplateDTO } from './ResourceTagTemplateDTO';
+import { ResourceTemplateDTO } from './ResourceTemplateDTO';
+import { SearchConsentRequestsDTO } from './SearchConsentRequestsDTO';
+import { SearchConsentRequestsDTOFields } from './SearchConsentRequestsDTOFields';
+import { SearchConsentsDTO } from './SearchConsentsDTO';
+import { SearchConsentsDTOFields } from './SearchConsentsDTOFields';
+import { SearchConsentsDTOSort, SearchConsentsDTOSortStatusEnum  , SearchConsentsDTOSortUpdatedAtEnum  , SearchConsentsDTOSortCreatedAtEnum   } from './SearchConsentsDTOSort';
 import { ServiceProviderDTO } from './ServiceProviderDTO';
 import { ServiceProviderPatchDTO } from './ServiceProviderPatchDTO';
+import { SingleProviderConsentDTO } from './SingleProviderConsentDTO';
 import { ValidationErrorDTO } from './ValidationErrorDTO';
 
 /* tslint:disable:no-unused-variable */
@@ -69,33 +111,59 @@ const supportedMediaTypes: { [mediaType: string]: number } = {
 
                  
 let enumsMap: Set<string> = new Set<string>([
+    "ConsentRequestSearchResultDTOResponseTotalStatusEnum",
+    "ConsentRequestSummaryDTOResponseTotalStatusEnum",
+    "ConsentType",
+    "SearchConsentsDTOSortStatusEnum",
+    "SearchConsentsDTOSortUpdatedAtEnum",
+    "SearchConsentsDTOSortCreatedAtEnum",
 ]);
 
 let typeMap: {[index: string]: any} = {
+    "ActionTemplateDTO": ActionTemplateDTO,
+    "ActionValidationErrorDTO": ActionValidationErrorDTO,
     "ApiErrorDTO": ApiErrorDTO,
     "ApprovalDoneUrlDTO": ApprovalDoneUrlDTO,
     "AuthTicketDTO": AuthTicketDTO,
+    "ConditionTemplateDTO": ConditionTemplateDTO,
     "ConsentApprovalFinalizeBody": ConsentApprovalFinalizeBody,
     "ConsentApprovalInitializeBody": ConsentApprovalInitializeBody,
     "ConsentDTO": ConsentDTO,
     "ConsentRequestFinalizeBody": ConsentRequestFinalizeBody,
     "ConsentRequestFinalizeUrlDTO": ConsentRequestFinalizeUrlDTO,
+    "ConsentRequestSearchResultDTO": ConsentRequestSearchResultDTO,
+    "ConsentRequestSearchResultDTOConsents": ConsentRequestSearchResultDTOConsents,
     "ConsentRequestSummaryDTO": ConsentRequestSummaryDTO,
     "ConsentRequestTokenBody": ConsentRequestTokenBody,
     "ConsentRequestUrlDTO": ConsentRequestUrlDTO,
+    "ConsentSearchResultDTO": ConsentSearchResultDTO,
     "ConsentSummaryDTO": ConsentSummaryDTO,
+    "CreateActionTemplateDTO": CreateActionTemplateDTO,
+    "CreateConditionTemplateDTO": CreateConditionTemplateDTO,
+    "CreateResourceTagTemplateDTO": CreateResourceTagTemplateDTO,
+    "CreateResourceTemplateDTO": CreateResourceTemplateDTO,
     "DebugDTO": DebugDTO,
     "DebugDTOExampleKeyPair": DebugDTOExampleKeyPair,
     "LegalEntityDTO": LegalEntityDTO,
     "LocalizedStringDTO": LocalizedStringDTO,
+    "PaginationResultDTOConsentRequestSearchResultDTO": PaginationResultDTOConsentRequestSearchResultDTO,
+    "PaginationResultDTOConsentSearchResultDTO": PaginationResultDTOConsentSearchResultDTO,
     "PolicyActionDTO": PolicyActionDTO,
     "PolicyConditionDTO": PolicyConditionDTO,
     "PolicyDTO": PolicyDTO,
     "PolicyResourceDTO": PolicyResourceDTO,
     "PolicySummaryDTO": PolicySummaryDTO,
     "ResourceTagDTO": ResourceTagDTO,
+    "ResourceTagTemplateDTO": ResourceTagTemplateDTO,
+    "ResourceTemplateDTO": ResourceTemplateDTO,
+    "SearchConsentRequestsDTO": SearchConsentRequestsDTO,
+    "SearchConsentRequestsDTOFields": SearchConsentRequestsDTOFields,
+    "SearchConsentsDTO": SearchConsentsDTO,
+    "SearchConsentsDTOFields": SearchConsentsDTOFields,
+    "SearchConsentsDTOSort": SearchConsentsDTOSort,
     "ServiceProviderDTO": ServiceProviderDTO,
     "ServiceProviderPatchDTO": ServiceProviderPatchDTO,
+    "SingleProviderConsentDTO": SingleProviderConsentDTO,
     "ValidationErrorDTO": ValidationErrorDTO,
 }
 

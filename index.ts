@@ -9,9 +9,10 @@ export * from "./servers";
 export * from "./help-functions/policyEnforcement";
 export * from "./help-functions/consentFlows";
 export * from "./help-functions/consentSearch";
+export * from "./help-functions/smartAccessHelper";
 
 export type { PromiseMiddleware as Middleware } from './middleware';
-export { PromiseBackofficeInternalAdminApi as BackofficeInternalAdminApi,  PromiseConsentRequestsApi as ConsentRequestsApi,  PromiseConsentsApi as ConsentsApi,  PromiseServiceProvidersApi as ServiceProvidersApi } from './types/PromiseAPI';
+export { PromiseActionTemplatesApi as ActionTemplatesApi,  PromiseConsentRequestsApi as ConsentRequestsApi,  PromiseConsentsApi as ConsentsApi,  PromiseServiceProvidersApi as ServiceProvidersApi } from './types/PromiseAPI';
 
 
 import SmartAccess from './main';

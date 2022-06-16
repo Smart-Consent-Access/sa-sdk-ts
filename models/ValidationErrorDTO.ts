@@ -15,7 +15,7 @@ import { HttpFile } from '../http/http';
 export class ValidationErrorDTO {
     'statusCode': number;
     'message': string;
-    'details': { [key: string]: any; };
+    'details'?: any;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -35,7 +35,7 @@ export class ValidationErrorDTO {
         {
             "name": "details",
             "baseName": "details",
-            "type": "{ [key: string]: any; }",
+            "type": "any",
             "format": ""
         }    ];
 

@@ -1,12 +1,49 @@
 import * as fs from "fs";
 import SmartAccess from "../index";
 import { SAAuthTicket } from "@smart-consent-access/sa-typings";
+import { SignJWT } from "jose";
+import { createPrivateKey } from "crypto";
 
-const SA = new SmartAccess();
+const saPrivateKey = fs.readFileSync(`../../../ah-api/certs/private.key.pem` || "", "utf8");
 
-const ticket = fs.readFileSync("./config/policyTicket.txt", "utf8");
+async function signJwt(payload: any) {
+  const ticket = await new SignJWT(payload)
+    .setProtectedHeader({ alg: "RS256" })
+    .setIssuer("Association Orchestrator")
+    .sign(createPrivateKey(saPrivateKey));
+  
+  return ticket;
+}
 
 describe("Audit ticket", () => {
+  let SA = new SmartAccess();
+  let ticket: string;
+
+  beforeEach(async () => {
+    SA = new SmartAccess();
+    await SA.init();
+    ticket = await signJwt({
+      requestingApplication: "404c75fd-ca02-4416-80a7-8eb2fca73b5c",
+      consentingApplication: "080f264e-99f6-49d3-938c-b8c2d93bf179",
+      consServiceProviderId: "080f264e-99f6-49d3-938c-b8c2d93bf179",
+      principalId: "ciam/abc-123",
+      actions: [
+        "telia:smartfamily/SubscribeFireAlarms",
+        "telia:smartfamily/SubscribeMoistureAlarms",
+      ],
+      resources: [
+        "telia:smartfamily/Country=Sweden/City=Sundsvall/Building=*/DeviceTypes=FireAlarms/Devices=*",
+      ],
+      conditions: [
+        "telia:smartfamily/DayOfWeek=Tue",
+        "telia:smartfamily/StartTime=10:00",
+        "telia:smartfamily/EndTime=12:00",
+      ],
+      iat: 1633348054,
+      iss: "Association Orchestrator",
+    })
+  })
+  
   it("should verify a ticket and return it", async () => {
     const expectedResult = {
       requestingApplication: "404c75fd-ca02-4416-80a7-8eb2fca73b5c",

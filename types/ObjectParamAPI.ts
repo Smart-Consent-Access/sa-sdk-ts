@@ -2,150 +2,152 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import * as models from '../models/all';
 import { Configuration} from '../configuration'
 
+import { ActionTemplateDTO } from '../models/ActionTemplateDTO';
+import { ActionValidationErrorDTO } from '../models/ActionValidationErrorDTO';
 import { ApiErrorDTO } from '../models/ApiErrorDTO';
 import { ApprovalDoneUrlDTO } from '../models/ApprovalDoneUrlDTO';
 import { AuthTicketDTO } from '../models/AuthTicketDTO';
+import { ConditionTemplateDTO } from '../models/ConditionTemplateDTO';
 import { ConsentApprovalFinalizeBody } from '../models/ConsentApprovalFinalizeBody';
 import { ConsentApprovalInitializeBody } from '../models/ConsentApprovalInitializeBody';
 import { ConsentDTO } from '../models/ConsentDTO';
 import { ConsentRequestFinalizeBody } from '../models/ConsentRequestFinalizeBody';
 import { ConsentRequestFinalizeUrlDTO } from '../models/ConsentRequestFinalizeUrlDTO';
+import { ConsentRequestSearchResultDTO } from '../models/ConsentRequestSearchResultDTO';
+import { ConsentRequestSearchResultDTOConsents } from '../models/ConsentRequestSearchResultDTOConsents';
 import { ConsentRequestSummaryDTO } from '../models/ConsentRequestSummaryDTO';
 import { ConsentRequestTokenBody } from '../models/ConsentRequestTokenBody';
 import { ConsentRequestUrlDTO } from '../models/ConsentRequestUrlDTO';
+import { ConsentSearchResultDTO } from '../models/ConsentSearchResultDTO';
 import { ConsentSummaryDTO } from '../models/ConsentSummaryDTO';
+import { ConsentType } from '../models/ConsentType';
+import { CreateActionTemplateDTO } from '../models/CreateActionTemplateDTO';
+import { CreateConditionTemplateDTO } from '../models/CreateConditionTemplateDTO';
+import { CreateResourceTagTemplateDTO } from '../models/CreateResourceTagTemplateDTO';
+import { CreateResourceTemplateDTO } from '../models/CreateResourceTemplateDTO';
 import { DebugDTO } from '../models/DebugDTO';
 import { DebugDTOExampleKeyPair } from '../models/DebugDTOExampleKeyPair';
 import { LegalEntityDTO } from '../models/LegalEntityDTO';
 import { LocalizedStringDTO } from '../models/LocalizedStringDTO';
+import { PaginationResultDTOConsentRequestSearchResultDTO } from '../models/PaginationResultDTOConsentRequestSearchResultDTO';
+import { PaginationResultDTOConsentSearchResultDTO } from '../models/PaginationResultDTOConsentSearchResultDTO';
 import { PolicyActionDTO } from '../models/PolicyActionDTO';
 import { PolicyConditionDTO } from '../models/PolicyConditionDTO';
 import { PolicyDTO } from '../models/PolicyDTO';
 import { PolicyResourceDTO } from '../models/PolicyResourceDTO';
 import { PolicySummaryDTO } from '../models/PolicySummaryDTO';
 import { ResourceTagDTO } from '../models/ResourceTagDTO';
+import { ResourceTagTemplateDTO } from '../models/ResourceTagTemplateDTO';
+import { ResourceTemplateDTO } from '../models/ResourceTemplateDTO';
+import { SearchConsentRequestsDTO } from '../models/SearchConsentRequestsDTO';
+import { SearchConsentRequestsDTOFields } from '../models/SearchConsentRequestsDTOFields';
+import { SearchConsentsDTO } from '../models/SearchConsentsDTO';
+import { SearchConsentsDTOFields } from '../models/SearchConsentsDTOFields';
+import { SearchConsentsDTOSort } from '../models/SearchConsentsDTOSort';
 import { ServiceProviderDTO } from '../models/ServiceProviderDTO';
 import { ServiceProviderPatchDTO } from '../models/ServiceProviderPatchDTO';
+import { SingleProviderConsentDTO } from '../models/SingleProviderConsentDTO';
 import { ValidationErrorDTO } from '../models/ValidationErrorDTO';
 
-import { ObservableBackofficeInternalAdminApi } from "./ObservableAPI";
-import { BackofficeInternalAdminApiRequestFactory, BackofficeInternalAdminApiResponseProcessor} from "../apis/BackofficeInternalAdminApi";
+import { ObservableActionTemplatesApi } from "./ObservableAPI";
+import { ActionTemplatesApiRequestFactory, ActionTemplatesApiResponseProcessor} from "../apis/ActionTemplatesApi";
 
-export interface BackofficeInternalAdminApiDeleteConsentRequestRequest {
+export interface ActionTemplatesApiDeleteActionTemplateRequest {
     /**
-     * 
+     * The action template id in UUID format
      * @type string
-     * @memberof BackofficeInternalAdminApideleteConsentRequest
+     * @memberof ActionTemplatesApideleteActionTemplate
      */
-    consentRequestId: string
+    actionTemplateId: string
 }
 
-export interface BackofficeInternalAdminApiDeleteServiceProviderRequest {
+export interface ActionTemplatesApiGetAllActionTemplatesForSPRequest {
     /**
-     * 
+     * The service provider id in UUID format
      * @type string
-     * @memberof BackofficeInternalAdminApideleteServiceProvider
+     * @memberof ActionTemplatesApigetAllActionTemplatesForSP
      */
     serviceProviderId: string
 }
 
-export interface BackofficeInternalAdminApiGetAllConsentRequestsRequest {
-}
-
-export interface BackofficeInternalAdminApiGetAllConsentsRequest {
-}
-
-export interface BackofficeInternalAdminApiGetAllServiceProvidersRequest {
-}
-
-export interface BackofficeInternalAdminApiGetDebugRequest {
-}
-
-export interface BackofficeInternalAdminApiPatchServiceProvidersRequest {
+export interface ActionTemplatesApiGetOneActionTemplateByIdRequest {
     /**
-     * 
+     * The action template id in UUID format
      * @type string
-     * @memberof BackofficeInternalAdminApipatchServiceProviders
+     * @memberof ActionTemplatesApigetOneActionTemplateById
      */
-    serviceProviderId: string
-    /**
-     * 
-     * @type ServiceProviderPatchDTO
-     * @memberof BackofficeInternalAdminApipatchServiceProviders
-     */
-    serviceProviderPatchDTO: ServiceProviderPatchDTO
+    actionTemplateId: string
 }
 
-export interface BackofficeInternalAdminApiPostServiceProvidersRequest {
+export interface ActionTemplatesApiPostActionTemplateRequest {
     /**
      * 
-     * @type ServiceProviderDTO
-     * @memberof BackofficeInternalAdminApipostServiceProviders
+     * @type CreateActionTemplateDTO
+     * @memberof ActionTemplatesApipostActionTemplate
      */
-    serviceProviderDTO: ServiceProviderDTO
+    createActionTemplateDTO: CreateActionTemplateDTO
 }
 
-export class ObjectBackofficeInternalAdminApi {
-    private api: ObservableBackofficeInternalAdminApi
+export interface ActionTemplatesApiUpdateActionTemplateRequest {
+    /**
+     * The action template id in UUID format
+     * @type string
+     * @memberof ActionTemplatesApiupdateActionTemplate
+     */
+    actionTemplateId: string
+    /**
+     * 
+     * @type CreateActionTemplateDTO
+     * @memberof ActionTemplatesApiupdateActionTemplate
+     */
+    createActionTemplateDTO: CreateActionTemplateDTO
+}
 
-    public constructor(configuration: Configuration, requestFactory?: BackofficeInternalAdminApiRequestFactory, responseProcessor?: BackofficeInternalAdminApiResponseProcessor) {
-        this.api = new ObservableBackofficeInternalAdminApi(configuration, requestFactory, responseProcessor);
+export class ObjectActionTemplatesApi {
+    private api: ObservableActionTemplatesApi
+
+    public constructor(configuration: Configuration, requestFactory?: ActionTemplatesApiRequestFactory, responseProcessor?: ActionTemplatesApiResponseProcessor) {
+        this.api = new ObservableActionTemplatesApi(configuration, requestFactory, responseProcessor);
     }
 
     /**
+     * Deletes a action template
      * @param param the request object
      */
-    public deleteConsentRequest(param: BackofficeInternalAdminApiDeleteConsentRequestRequest, options?: Configuration): Promise<void> {
-        return this.api.deleteConsentRequest(param.consentRequestId,  options).toPromise();
+    public deleteActionTemplate(param: ActionTemplatesApiDeleteActionTemplateRequest, options?: Configuration): Promise<void> {
+        return this.api.deleteActionTemplate(param.actionTemplateId,  options).toPromise();
     }
 
     /**
+     * Fetch all action template hierarchy's on the given service provider
      * @param param the request object
      */
-    public deleteServiceProvider(param: BackofficeInternalAdminApiDeleteServiceProviderRequest, options?: Configuration): Promise<void> {
-        return this.api.deleteServiceProvider(param.serviceProviderId,  options).toPromise();
+    public getAllActionTemplatesForSP(param: ActionTemplatesApiGetAllActionTemplatesForSPRequest, options?: Configuration): Promise<Array<ActionTemplateDTO>> {
+        return this.api.getAllActionTemplatesForSP(param.serviceProviderId,  options).toPromise();
     }
 
     /**
+     * Fetch the action template matching the ID
      * @param param the request object
      */
-    public getAllConsentRequests(param: BackofficeInternalAdminApiGetAllConsentRequestsRequest, options?: Configuration): Promise<Array<ConsentRequestSummaryDTO>> {
-        return this.api.getAllConsentRequests( options).toPromise();
+    public getOneActionTemplateById(param: ActionTemplatesApiGetOneActionTemplateByIdRequest, options?: Configuration): Promise<ActionTemplateDTO> {
+        return this.api.getOneActionTemplateById(param.actionTemplateId,  options).toPromise();
     }
 
     /**
+     * Creates a new action template hierarchy on a service provider
      * @param param the request object
      */
-    public getAllConsents(param: BackofficeInternalAdminApiGetAllConsentsRequest, options?: Configuration): Promise<Array<ConsentDTO>> {
-        return this.api.getAllConsents( options).toPromise();
+    public postActionTemplate(param: ActionTemplatesApiPostActionTemplateRequest, options?: Configuration): Promise<ActionTemplateDTO> {
+        return this.api.postActionTemplate(param.createActionTemplateDTO,  options).toPromise();
     }
 
     /**
+     * Updates a existing action template by replacing it with a new version
      * @param param the request object
      */
-    public getAllServiceProviders(param: BackofficeInternalAdminApiGetAllServiceProvidersRequest, options?: Configuration): Promise<Array<ServiceProviderDTO>> {
-        return this.api.getAllServiceProviders( options).toPromise();
-    }
-
-    /**
-     * @param param the request object
-     */
-    public getDebug(param: BackofficeInternalAdminApiGetDebugRequest, options?: Configuration): Promise<DebugDTO> {
-        return this.api.getDebug( options).toPromise();
-    }
-
-    /**
-     * @param param the request object
-     */
-    public patchServiceProviders(param: BackofficeInternalAdminApiPatchServiceProvidersRequest, options?: Configuration): Promise<ServiceProviderDTO> {
-        return this.api.patchServiceProviders(param.serviceProviderId, param.serviceProviderPatchDTO,  options).toPromise();
-    }
-
-    /**
-     * @param param the request object
-     */
-    public postServiceProviders(param: BackofficeInternalAdminApiPostServiceProvidersRequest, options?: Configuration): Promise<ServiceProviderDTO> {
-        return this.api.postServiceProviders(param.serviceProviderDTO,  options).toPromise();
+    public updateActionTemplate(param: ActionTemplatesApiUpdateActionTemplateRequest, options?: Configuration): Promise<ActionTemplateDTO> {
+        return this.api.updateActionTemplate(param.actionTemplateId, param.createActionTemplateDTO,  options).toPromise();
     }
 
 }
@@ -198,6 +200,15 @@ export interface ConsentRequestsApiGetConsentRequestsRequest {
     direction: 'for_me' | 'by_me'
 }
 
+export interface ConsentRequestsApiSearchConsentRequestsRequest {
+    /**
+     * The search parameters
+     * @type SearchConsentRequestsDTO
+     * @memberof ConsentRequestsApisearchConsentRequests
+     */
+    searchConsentRequestsDTO: SearchConsentRequestsDTO
+}
+
 export class ObjectConsentRequestsApi {
     private api: ObservableConsentRequestsApi
 
@@ -245,6 +256,14 @@ export class ObjectConsentRequestsApi {
         return this.api.getConsentRequests(param.direction,  options).toPromise();
     }
 
+    /**
+     * Search for consent requests given some search parameters. See SearchConsentRequestsDTO for details on parameters. Will return a list of matching consent requests
+     * @param param the request object
+     */
+    public searchConsentRequests(param: ConsentRequestsApiSearchConsentRequestsRequest, options?: Configuration): Promise<PaginationResultDTOConsentRequestSearchResultDTO> {
+        return this.api.searchConsentRequests(param.searchConsentRequestsDTO,  options).toPromise();
+    }
+
 }
 
 import { ObservableConsentsApi } from "./ObservableAPI";
@@ -286,6 +305,24 @@ export interface ConsentsApiGetConsentRequest {
     consentId: string
 }
 
+export interface ConsentsApiSearchConsentsRequest {
+    /**
+     * The search parameters
+     * @type SearchConsentsDTO
+     * @memberof ConsentsApisearchConsents
+     */
+    searchConsentsDTO: SearchConsentsDTO
+}
+
+export interface ConsentsApiSingleProviderConsentRequest {
+    /**
+     * Info about the consent to create
+     * @type SingleProviderConsentDTO
+     * @memberof ConsentsApisingleProviderConsent
+     */
+    singleProviderConsentDTO: SingleProviderConsentDTO
+}
+
 export class ObjectConsentsApi {
     private api: ObservableConsentsApi
 
@@ -310,7 +347,7 @@ export class ObjectConsentsApi {
     }
 
     /**
-     * Initialize a consent approval as the consenting service provider. The information about the request to approve is specified in the request body with a signed JWT which will be verified to be signed by the calling/consenting service provider
+     * Initialize a consent approval or rejection as the consenting service provider. The information about the request to approve or reject is specified in the request body with a signed JWT which will be verified to be signed by the calling/consenting service provider. A consent request can be approved or rejected by more than one consenting principal (legal entity) by initiating more consents
      * @param param the request object
      */
     public flowConsentApprovalInitialize(param: ConsentsApiFlowConsentApprovalInitializeRequest, options?: Configuration): Promise<ApprovalDoneUrlDTO> {
@@ -325,10 +362,35 @@ export class ObjectConsentsApi {
         return this.api.getConsent(param.consentId,  options).toPromise();
     }
 
+    /**
+     * Search for consents (approvals) given some search parameters. See SearchConsentsDTO for details on parameters. Will return a list of matching consents
+     * @param param the request object
+     */
+    public searchConsents(param: ConsentsApiSearchConsentsRequest, options?: Configuration): Promise<PaginationResultDTOConsentSearchResultDTO> {
+        return this.api.searchConsents(param.searchConsentsDTO,  options).toPromise();
+    }
+
+    /**
+     * Create a single provider consent. This is a complete consent approval for some action, resources and conditions, with your own serviceprovider as both requester and consenter
+     * @param param the request object
+     */
+    public singleProviderConsent(param: ConsentsApiSingleProviderConsentRequest, options?: Configuration): Promise<string> {
+        return this.api.singleProviderConsent(param.singleProviderConsentDTO,  options).toPromise();
+    }
+
 }
 
 import { ObservableServiceProvidersApi } from "./ObservableAPI";
 import { ServiceProvidersApiRequestFactory, ServiceProvidersApiResponseProcessor} from "../apis/ServiceProvidersApi";
+
+export interface ServiceProvidersApiDeleteServiceProviderRequest {
+    /**
+     * The service provider id in UUID format
+     * @type string
+     * @memberof ServiceProvidersApideleteServiceProvider
+     */
+    serviceProviderId: string
+}
 
 export interface ServiceProvidersApiGetServiceProviderRequest {
     /**
@@ -339,6 +401,30 @@ export interface ServiceProvidersApiGetServiceProviderRequest {
     id: string
 }
 
+export interface ServiceProvidersApiPatchServiceProvidersRequest {
+    /**
+     * The service provider id in UUID format
+     * @type string
+     * @memberof ServiceProvidersApipatchServiceProviders
+     */
+    serviceProviderId: string
+    /**
+     * 
+     * @type ServiceProviderPatchDTO
+     * @memberof ServiceProvidersApipatchServiceProviders
+     */
+    serviceProviderPatchDTO: ServiceProviderPatchDTO
+}
+
+export interface ServiceProvidersApiPostServiceProvidersRequest {
+    /**
+     * 
+     * @type ServiceProviderDTO
+     * @memberof ServiceProvidersApipostServiceProviders
+     */
+    serviceProviderDTO: ServiceProviderDTO
+}
+
 export class ObjectServiceProvidersApi {
     private api: ObservableServiceProvidersApi
 
@@ -347,11 +433,35 @@ export class ObjectServiceProvidersApi {
     }
 
     /**
+     * Soft deletes (set to INACTIVE) a service provider
+     * @param param the request object
+     */
+    public deleteServiceProvider(param: ServiceProvidersApiDeleteServiceProviderRequest, options?: Configuration): Promise<void> {
+        return this.api.deleteServiceProvider(param.serviceProviderId,  options).toPromise();
+    }
+
+    /**
      * Fetch information about the given service provider
      * @param param the request object
      */
     public getServiceProvider(param: ServiceProvidersApiGetServiceProviderRequest, options?: Configuration): Promise<ServiceProviderDTO> {
         return this.api.getServiceProvider(param.id,  options).toPromise();
+    }
+
+    /**
+     * Updates a service provider with new data. Only updates explicitly set new values, rest is left as is
+     * @param param the request object
+     */
+    public patchServiceProviders(param: ServiceProvidersApiPatchServiceProvidersRequest, options?: Configuration): Promise<ServiceProviderDTO> {
+        return this.api.patchServiceProviders(param.serviceProviderId, param.serviceProviderPatchDTO,  options).toPromise();
+    }
+
+    /**
+     * Creates a new service provider in SA
+     * @param param the request object
+     */
+    public postServiceProviders(param: ServiceProvidersApiPostServiceProvidersRequest, options?: Configuration): Promise<ServiceProviderDTO> {
+        return this.api.postServiceProviders(param.serviceProviderDTO,  options).toPromise();
     }
 
 }

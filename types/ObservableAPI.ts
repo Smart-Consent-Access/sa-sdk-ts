@@ -3,53 +3,75 @@ import * as models from '../models/all';
 import { Configuration} from '../configuration'
 import { Observable, of, from } from '../rxjsStub';
 import {mergeMap, map} from  '../rxjsStub';
+import { ActionTemplateDTO } from '../models/ActionTemplateDTO';
+import { ActionValidationErrorDTO } from '../models/ActionValidationErrorDTO';
 import { ApiErrorDTO } from '../models/ApiErrorDTO';
 import { ApprovalDoneUrlDTO } from '../models/ApprovalDoneUrlDTO';
 import { AuthTicketDTO } from '../models/AuthTicketDTO';
+import { ConditionTemplateDTO } from '../models/ConditionTemplateDTO';
 import { ConsentApprovalFinalizeBody } from '../models/ConsentApprovalFinalizeBody';
 import { ConsentApprovalInitializeBody } from '../models/ConsentApprovalInitializeBody';
 import { ConsentDTO } from '../models/ConsentDTO';
 import { ConsentRequestFinalizeBody } from '../models/ConsentRequestFinalizeBody';
 import { ConsentRequestFinalizeUrlDTO } from '../models/ConsentRequestFinalizeUrlDTO';
+import { ConsentRequestSearchResultDTO } from '../models/ConsentRequestSearchResultDTO';
+import { ConsentRequestSearchResultDTOConsents } from '../models/ConsentRequestSearchResultDTOConsents';
 import { ConsentRequestSummaryDTO } from '../models/ConsentRequestSummaryDTO';
 import { ConsentRequestTokenBody } from '../models/ConsentRequestTokenBody';
 import { ConsentRequestUrlDTO } from '../models/ConsentRequestUrlDTO';
+import { ConsentSearchResultDTO } from '../models/ConsentSearchResultDTO';
 import { ConsentSummaryDTO } from '../models/ConsentSummaryDTO';
+import { ConsentType } from '../models/ConsentType';
+import { CreateActionTemplateDTO } from '../models/CreateActionTemplateDTO';
+import { CreateConditionTemplateDTO } from '../models/CreateConditionTemplateDTO';
+import { CreateResourceTagTemplateDTO } from '../models/CreateResourceTagTemplateDTO';
+import { CreateResourceTemplateDTO } from '../models/CreateResourceTemplateDTO';
 import { DebugDTO } from '../models/DebugDTO';
 import { DebugDTOExampleKeyPair } from '../models/DebugDTOExampleKeyPair';
 import { LegalEntityDTO } from '../models/LegalEntityDTO';
 import { LocalizedStringDTO } from '../models/LocalizedStringDTO';
+import { PaginationResultDTOConsentRequestSearchResultDTO } from '../models/PaginationResultDTOConsentRequestSearchResultDTO';
+import { PaginationResultDTOConsentSearchResultDTO } from '../models/PaginationResultDTOConsentSearchResultDTO';
 import { PolicyActionDTO } from '../models/PolicyActionDTO';
 import { PolicyConditionDTO } from '../models/PolicyConditionDTO';
 import { PolicyDTO } from '../models/PolicyDTO';
 import { PolicyResourceDTO } from '../models/PolicyResourceDTO';
 import { PolicySummaryDTO } from '../models/PolicySummaryDTO';
 import { ResourceTagDTO } from '../models/ResourceTagDTO';
+import { ResourceTagTemplateDTO } from '../models/ResourceTagTemplateDTO';
+import { ResourceTemplateDTO } from '../models/ResourceTemplateDTO';
+import { SearchConsentRequestsDTO } from '../models/SearchConsentRequestsDTO';
+import { SearchConsentRequestsDTOFields } from '../models/SearchConsentRequestsDTOFields';
+import { SearchConsentsDTO } from '../models/SearchConsentsDTO';
+import { SearchConsentsDTOFields } from '../models/SearchConsentsDTOFields';
+import { SearchConsentsDTOSort } from '../models/SearchConsentsDTOSort';
 import { ServiceProviderDTO } from '../models/ServiceProviderDTO';
 import { ServiceProviderPatchDTO } from '../models/ServiceProviderPatchDTO';
+import { SingleProviderConsentDTO } from '../models/SingleProviderConsentDTO';
 import { ValidationErrorDTO } from '../models/ValidationErrorDTO';
 
-import { BackofficeInternalAdminApiRequestFactory, BackofficeInternalAdminApiResponseProcessor} from "../apis/BackofficeInternalAdminApi";
-export class ObservableBackofficeInternalAdminApi {
-    private requestFactory: BackofficeInternalAdminApiRequestFactory;
-    private responseProcessor: BackofficeInternalAdminApiResponseProcessor;
+import { ActionTemplatesApiRequestFactory, ActionTemplatesApiResponseProcessor} from "../apis/ActionTemplatesApi";
+export class ObservableActionTemplatesApi {
+    private requestFactory: ActionTemplatesApiRequestFactory;
+    private responseProcessor: ActionTemplatesApiResponseProcessor;
     private configuration: Configuration;
 
     public constructor(
         configuration: Configuration,
-        requestFactory?: BackofficeInternalAdminApiRequestFactory,
-        responseProcessor?: BackofficeInternalAdminApiResponseProcessor
+        requestFactory?: ActionTemplatesApiRequestFactory,
+        responseProcessor?: ActionTemplatesApiResponseProcessor
     ) {
         this.configuration = configuration;
-        this.requestFactory = requestFactory || new BackofficeInternalAdminApiRequestFactory(configuration);
-        this.responseProcessor = responseProcessor || new BackofficeInternalAdminApiResponseProcessor();
+        this.requestFactory = requestFactory || new ActionTemplatesApiRequestFactory(configuration);
+        this.responseProcessor = responseProcessor || new ActionTemplatesApiResponseProcessor();
     }
 
     /**
-     * @param consentRequestId 
+     * Deletes a action template
+     * @param actionTemplateId The action template id in UUID format
      */
-    public deleteConsentRequest(consentRequestId: string, _options?: Configuration): Observable<void> {
-        const requestContextPromise = this.requestFactory.deleteConsentRequest(consentRequestId, _options);
+    public deleteActionTemplate(actionTemplateId: string, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.deleteActionTemplate(actionTemplateId, _options);
 
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
@@ -63,15 +85,16 @@ export class ObservableBackofficeInternalAdminApi {
                 for (let middleware of this.configuration.middleware) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteConsentRequest(rsp)));
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteActionTemplate(rsp)));
             }));
     }
  
     /**
-     * @param serviceProviderId 
+     * Fetch all action template hierarchy's on the given service provider
+     * @param serviceProviderId The service provider id in UUID format
      */
-    public deleteServiceProvider(serviceProviderId: string, _options?: Configuration): Observable<void> {
-        const requestContextPromise = this.requestFactory.deleteServiceProvider(serviceProviderId, _options);
+    public getAllActionTemplatesForSP(serviceProviderId: string, _options?: Configuration): Observable<Array<ActionTemplateDTO>> {
+        const requestContextPromise = this.requestFactory.getAllActionTemplatesForSP(serviceProviderId, _options);
 
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
@@ -85,14 +108,16 @@ export class ObservableBackofficeInternalAdminApi {
                 for (let middleware of this.configuration.middleware) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteServiceProvider(rsp)));
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getAllActionTemplatesForSP(rsp)));
             }));
     }
  
     /**
+     * Fetch the action template matching the ID
+     * @param actionTemplateId The action template id in UUID format
      */
-    public getAllConsentRequests(_options?: Configuration): Observable<Array<ConsentRequestSummaryDTO>> {
-        const requestContextPromise = this.requestFactory.getAllConsentRequests(_options);
+    public getOneActionTemplateById(actionTemplateId: string, _options?: Configuration): Observable<ActionTemplateDTO> {
+        const requestContextPromise = this.requestFactory.getOneActionTemplateById(actionTemplateId, _options);
 
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
@@ -106,14 +131,16 @@ export class ObservableBackofficeInternalAdminApi {
                 for (let middleware of this.configuration.middleware) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getAllConsentRequests(rsp)));
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getOneActionTemplateById(rsp)));
             }));
     }
  
     /**
+     * Creates a new action template hierarchy on a service provider
+     * @param createActionTemplateDTO 
      */
-    public getAllConsents(_options?: Configuration): Observable<Array<ConsentDTO>> {
-        const requestContextPromise = this.requestFactory.getAllConsents(_options);
+    public postActionTemplate(createActionTemplateDTO: CreateActionTemplateDTO, _options?: Configuration): Observable<ActionTemplateDTO> {
+        const requestContextPromise = this.requestFactory.postActionTemplate(createActionTemplateDTO, _options);
 
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
@@ -127,14 +154,17 @@ export class ObservableBackofficeInternalAdminApi {
                 for (let middleware of this.configuration.middleware) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getAllConsents(rsp)));
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.postActionTemplate(rsp)));
             }));
     }
  
     /**
+     * Updates a existing action template by replacing it with a new version
+     * @param actionTemplateId The action template id in UUID format
+     * @param createActionTemplateDTO 
      */
-    public getAllServiceProviders(_options?: Configuration): Observable<Array<ServiceProviderDTO>> {
-        const requestContextPromise = this.requestFactory.getAllServiceProviders(_options);
+    public updateActionTemplate(actionTemplateId: string, createActionTemplateDTO: CreateActionTemplateDTO, _options?: Configuration): Observable<ActionTemplateDTO> {
+        const requestContextPromise = this.requestFactory.updateActionTemplate(actionTemplateId, createActionTemplateDTO, _options);
 
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
@@ -148,73 +178,7 @@ export class ObservableBackofficeInternalAdminApi {
                 for (let middleware of this.configuration.middleware) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getAllServiceProviders(rsp)));
-            }));
-    }
- 
-    /**
-     */
-    public getDebug(_options?: Configuration): Observable<DebugDTO> {
-        const requestContextPromise = this.requestFactory.getDebug(_options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getDebug(rsp)));
-            }));
-    }
- 
-    /**
-     * @param serviceProviderId 
-     * @param serviceProviderPatchDTO 
-     */
-    public patchServiceProviders(serviceProviderId: string, serviceProviderPatchDTO: ServiceProviderPatchDTO, _options?: Configuration): Observable<ServiceProviderDTO> {
-        const requestContextPromise = this.requestFactory.patchServiceProviders(serviceProviderId, serviceProviderPatchDTO, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.patchServiceProviders(rsp)));
-            }));
-    }
- 
-    /**
-     * @param serviceProviderDTO 
-     */
-    public postServiceProviders(serviceProviderDTO: ServiceProviderDTO, _options?: Configuration): Observable<ServiceProviderDTO> {
-        const requestContextPromise = this.requestFactory.postServiceProviders(serviceProviderDTO, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.postServiceProviders(rsp)));
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateActionTemplate(rsp)));
             }));
     }
  
@@ -351,6 +315,29 @@ export class ObservableConsentRequestsApi {
             }));
     }
  
+    /**
+     * Search for consent requests given some search parameters. See SearchConsentRequestsDTO for details on parameters. Will return a list of matching consent requests
+     * @param searchConsentRequestsDTO The search parameters
+     */
+    public searchConsentRequests(searchConsentRequestsDTO: SearchConsentRequestsDTO, _options?: Configuration): Observable<PaginationResultDTOConsentRequestSearchResultDTO> {
+        const requestContextPromise = this.requestFactory.searchConsentRequests(searchConsentRequestsDTO, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.searchConsentRequests(rsp)));
+            }));
+    }
+ 
 }
 
 import { ConsentsApiRequestFactory, ConsentsApiResponseProcessor} from "../apis/ConsentsApi";
@@ -416,7 +403,7 @@ export class ObservableConsentsApi {
     }
  
     /**
-     * Initialize a consent approval as the consenting service provider. The information about the request to approve is specified in the request body with a signed JWT which will be verified to be signed by the calling/consenting service provider
+     * Initialize a consent approval or rejection as the consenting service provider. The information about the request to approve or reject is specified in the request body with a signed JWT which will be verified to be signed by the calling/consenting service provider. A consent request can be approved or rejected by more than one consenting principal (legal entity) by initiating more consents
      * @param consentApprovalInitializeBody The signed jwt with payload of type SAConsApprovalInitializeSp2ToSaJWT
      */
     public flowConsentApprovalInitialize(consentApprovalInitializeBody: ConsentApprovalInitializeBody, _options?: Configuration): Observable<ApprovalDoneUrlDTO> {
@@ -461,6 +448,52 @@ export class ObservableConsentsApi {
             }));
     }
  
+    /**
+     * Search for consents (approvals) given some search parameters. See SearchConsentsDTO for details on parameters. Will return a list of matching consents
+     * @param searchConsentsDTO The search parameters
+     */
+    public searchConsents(searchConsentsDTO: SearchConsentsDTO, _options?: Configuration): Observable<PaginationResultDTOConsentSearchResultDTO> {
+        const requestContextPromise = this.requestFactory.searchConsents(searchConsentsDTO, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.searchConsents(rsp)));
+            }));
+    }
+ 
+    /**
+     * Create a single provider consent. This is a complete consent approval for some action, resources and conditions, with your own serviceprovider as both requester and consenter
+     * @param singleProviderConsentDTO Info about the consent to create
+     */
+    public singleProviderConsent(singleProviderConsentDTO: SingleProviderConsentDTO, _options?: Configuration): Observable<string> {
+        const requestContextPromise = this.requestFactory.singleProviderConsent(singleProviderConsentDTO, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.singleProviderConsent(rsp)));
+            }));
+    }
+ 
 }
 
 import { ServiceProvidersApiRequestFactory, ServiceProvidersApiResponseProcessor} from "../apis/ServiceProvidersApi";
@@ -479,6 +512,29 @@ export class ObservableServiceProvidersApi {
         this.responseProcessor = responseProcessor || new ServiceProvidersApiResponseProcessor();
     }
 
+    /**
+     * Soft deletes (set to INACTIVE) a service provider
+     * @param serviceProviderId The service provider id in UUID format
+     */
+    public deleteServiceProvider(serviceProviderId: string, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.deleteServiceProvider(serviceProviderId, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteServiceProvider(rsp)));
+            }));
+    }
+ 
     /**
      * Fetch information about the given service provider
      * @param id The service provider id in UUID format
@@ -499,6 +555,53 @@ export class ObservableServiceProvidersApi {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getServiceProvider(rsp)));
+            }));
+    }
+ 
+    /**
+     * Updates a service provider with new data. Only updates explicitly set new values, rest is left as is
+     * @param serviceProviderId The service provider id in UUID format
+     * @param serviceProviderPatchDTO 
+     */
+    public patchServiceProviders(serviceProviderId: string, serviceProviderPatchDTO: ServiceProviderPatchDTO, _options?: Configuration): Observable<ServiceProviderDTO> {
+        const requestContextPromise = this.requestFactory.patchServiceProviders(serviceProviderId, serviceProviderPatchDTO, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.patchServiceProviders(rsp)));
+            }));
+    }
+ 
+    /**
+     * Creates a new service provider in SA
+     * @param serviceProviderDTO 
+     */
+    public postServiceProviders(serviceProviderDTO: ServiceProviderDTO, _options?: Configuration): Observable<ServiceProviderDTO> {
+        const requestContextPromise = this.requestFactory.postServiceProviders(serviceProviderDTO, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.postServiceProviders(rsp)));
             }));
     }
  

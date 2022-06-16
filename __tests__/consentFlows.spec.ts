@@ -1,20 +1,19 @@
-import { createPublicKey } from "crypto";
+import { createPrivateKey, createPublicKey } from "crypto";
 import {
   SAConsReqInitializeSp1ToSaJWT,
   SAConsReqFinalizeSp2ToSaJWT,
   SAConsApprovalInitializeSp2ToSaJWT,
   SAConsApprovalFinalizeSp1ToSaJWT,
-  SAConsReqInitializeSaToSp2JWT,
-  SAConsReqFinalizeSaToSp1JWT,
-  SAConsApprovalInitializeSaToSp1JWT,
   SAConsApprovalFinalizeSaToSp2JWT,
   LocalizedString,
+  ReceivedSAConsReqInitialization,
+  ReceivedSAConsReqFinalization,
+  ReceivedSAConsInitialization,
+  SAConsReqInitializeSaToSp2JWT,
 } from "@smart-consent-access/sa-typings";
-import { jwtVerify } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 import * as fs from "fs";
 import SmartAccess from "../index";
-
-const SA = new SmartAccess();
 
 const serviceProviderId = process.env.SA_SERVICE_PROVIDER_ID;
 
@@ -28,19 +27,74 @@ const publicKey = fs
   )
   .toString();
 
+const saPrivateKey = fs.readFileSync(`../../../ah-api/certs/private.key.pem` || "", "utf8");
+
+const actions = [
+  {
+    tenant: "org",
+    system: "sp",
+    actionName: "SubscribeCarPosition",
+  },
+  {
+    tenant: "org",
+    system: "sp",
+    actionName: "SubscribeEVCharging",
+  },
+];
+
+const resources = [
+  {
+    tenant: "org",
+    system: "sp",
+    resourceTags: [
+      {
+        key: "RealEstate",
+        value: "ABC123",
+      },
+      {
+        key: "Building",
+        value: "1",
+      },
+      {
+        key: "Family",
+        value: "*",
+      },
+      {
+        key: "DeviceType",
+        value: "Car",
+      },
+      {
+        key: "Device",
+        value: "*",
+      },
+    ],
+  },
+];
+
+const conditions: [] = [];
+
+async function signJwt(payload: any) {
+  const ticket = await new SignJWT(payload)
+    .setProtectedHeader({ alg: "RS256" })
+    .setIssuer("Association Orchestrator")
+    .sign(createPrivateKey(saPrivateKey));
+  
+  return ticket;
+}
+
 describe("create and verify urls", () => {
+  
+  let SA = new SmartAccess();
+  beforeEach(async () => {
+    SA = new SmartAccess();
+    await SA.init();
+  })
+
   it("should create a initiate consent request and verify it", async () => {
     const consServiceProviderId = "456";
     const reqPrincipalId = "1";
     const reqPrincipalName = "Johan";
-    const actions = [
-      "telia:smartfamily/SubscribeCarPosition",
-      "telia:smartfamily/SubscribeEVCharging",
-    ];
-    const resources = [
-      `telia:smartfamily/RealEstate=ABC123/Building=1/Family=*/DeviceType=Car/Device=*`,
-    ];
-    const conditions: string[] = [];
+
     const expirationTime = "15min";
 
     const expectedResult =
@@ -59,7 +113,7 @@ describe("create and verify urls", () => {
           "Hello! Our cleaning personnel needs access to your apartement for your weekly cleaning. Please contact me if you have any questions on [08-123 45 67](tel:+4681234567). Regards Peter"
       }
     ];
-    
+
     const result = await SA.consentFlows.createConsentRequestInitialization({
       consentServiceProviderId: consServiceProviderId,
       requestPrincipalId: reqPrincipalId,
@@ -81,9 +135,9 @@ describe("create and verify urls", () => {
     expect(openResult.consServiceProviderId).toEqual(consServiceProviderId);
     expect(openResult.reqPrincipalId).toEqual(reqPrincipalId);
     expect(openResult.reqPrincipalName).toEqual(reqPrincipalName);
-    expect(openResult.actions).toEqual(actions);
-    expect(openResult.resources).toEqual(resources);
-    expect(openResult.conditions).toEqual(conditions);
+    expect(SA.consentFlows.getActionStringFormat(openResult.actions)).toEqual(actions);
+    expect(SA.consentFlows.getResourceStringFormat(openResult.resources)).toEqual(resources);
+    expect(SA.consentFlows.getConditionStringFormat(openResult.conditions)).toEqual(conditions);
     expect(openResult.exp).toEqual(time + 60 * 15);
   });
 
@@ -110,14 +164,6 @@ describe("create and verify urls", () => {
 
   it("should create a finalize consent request and verify it", async () => {
     const consentRequestId = "456";
-    const actions = [
-      "telia:smartfamily/SubscribeCarPosition",
-      "telia:smartfamily/SubscribeEVCharging",
-    ];
-    const resources = [
-      `telia:smartfamily/RealEstate=ABC123/Building=1/Family=*/DeviceType=Car/Device=*`,
-    ];
-    const conditions: string[] = [];
     const expirationTime = "15min";
 
     const expectedResult =
@@ -129,6 +175,7 @@ describe("create and verify urls", () => {
       resources: resources,
       conditions: conditions,
       expirationTime: expirationTime,
+      numAffectedUsers: 1,
     });
 
     const openResult = <SAConsReqFinalizeSp2ToSaJWT>(
@@ -138,9 +185,9 @@ describe("create and verify urls", () => {
     expect(result.url).toContain(expectedResult);
     expect(openResult.iss).toEqual(serviceProviderId);
     expect(openResult.consReqId).toEqual(consentRequestId);
-    expect(openResult.actions).toEqual(actions);
-    expect(openResult.resources).toEqual(resources);
-    expect(openResult.conditions).toEqual(conditions);
+    expect(SA.consentFlows.getActionStringFormat(openResult.actions)).toEqual(actions);
+    expect(SA.consentFlows.getResourceStringFormat(openResult.resources)).toEqual(resources);
+    expect(SA.consentFlows.getConditionStringFormat(openResult.conditions)).toEqual(conditions);
     expect(openResult.exp).toEqual(time + 60 * 15);
   });
 
@@ -151,6 +198,7 @@ describe("create and verify urls", () => {
 
     const result = await SA.consentFlows.createConsentRequestFinalization({
       consentRequestId: consentRequestId,
+      numAffectedUsers: 1,
     });
 
     const openResult = <SAConsReqFinalizeSp2ToSaJWT>(
@@ -168,14 +216,6 @@ describe("create and verify urls", () => {
     const consentRequestId = "456";
     const conPrincipalId = "1";
     const conPrincipalName = "Johan";
-    const actions = [
-      "telia:smartfamily/SubscribeCarPosition",
-      "telia:smartfamily/SubscribeEVCharging",
-    ];
-    const resources = [
-      `telia:smartfamily/RealEstate=ABC123/Building=1/Family=*/DeviceType=Car/Device=*`,
-    ];
-    const conditions: string[] = [];
     const expirationTime = "15min";
 
     const expectedResult =
@@ -199,9 +239,9 @@ describe("create and verify urls", () => {
     expect(openResult.consReqId).toEqual(consentRequestId);
     expect(openResult.consPrincipalId).toEqual(conPrincipalId);
     expect(openResult.consPrincipalName).toEqual(conPrincipalName);
-    expect(openResult.actions).toEqual(actions);
-    expect(openResult.resources).toEqual(resources);
-    expect(openResult.conditions).toEqual(conditions);
+    expect(SA.consentFlows.getActionStringFormat(openResult.actions)).toEqual(actions);
+    expect(SA.consentFlows.getResourceStringFormat(openResult.resources)).toEqual(resources);
+    expect(SA.consentFlows.getConditionStringFormat(openResult.conditions)).toEqual(conditions);
     expect(openResult.exp).toEqual(time + 60 * 15);
   });
 
@@ -270,9 +310,15 @@ describe("create and verify urls", () => {
 });
 
 describe("open and return consent payloads", () => {
+  let SA = new SmartAccess();
+  beforeEach(async () => {
+    SA = new SmartAccess();
+    await SA.init();
+  })
+  
   it("should receive a initiate consent request", async () => {
     const expectedResult = {
-      iss: "Association Hub",
+      iss: "Association Orchestrator",
       aud: "test",
       goal: "INITIATE",
       type: "CONSENT_REQUEST",
@@ -287,17 +333,17 @@ describe("open and return consent payloads", () => {
       consReqId: "789",
       reqServiceProviderName: "test",
     };
-    const ticket = fs.readFileSync("./config/conReqInitTicket.txt", "utf8");
+    const ticket = await signJwt(expectedResult);
 
-    const result: SAConsReqInitializeSaToSp2JWT =
+    const result: ReceivedSAConsReqInitialization =
       await SA.consentFlows.receiveConsentRequestInitialization(ticket);
 
-    expect(result).toEqual(expectedResult);
+    expect(result.ticket).toEqual(expectedResult);
   });
 
   it("should receive a finalize consent request", async () => {
     const expectedResult = {
-      iss: "Association Hub",
+      iss: "Association Orchestrator",
       aud: "test",
       goal: "FINALIZE",
       type: "CONSENT_REQUEST",
@@ -307,17 +353,17 @@ describe("open and return consent payloads", () => {
       consServiceProviderId: "123",
       consReqId: "789",
     };
-    const ticket = fs.readFileSync("./config/conReqFinTicket.txt", "utf8");
+    const ticket = await signJwt(expectedResult);
 
-    const result: SAConsReqFinalizeSaToSp1JWT =
+    const result: ReceivedSAConsReqFinalization =
       await SA.consentFlows.receiveConsentRequestFinalization(ticket);
 
-    expect(result).toEqual(expectedResult);
+    expect(result.ticket).toEqual(expectedResult);
   });
 
   it("should receive a initialize consent approval", async () => {
     const expectedResult = {
-      iss: "Association Hub",
+      iss: "Association Orchestrator",
       aud: "test",
       goal: "INITIATE",
       type: "CONSENT_APPROVAL",
@@ -331,28 +377,181 @@ describe("open and return consent payloads", () => {
       consId: "147",
       consServiceProviderName: "test",
     };
-    const ticket = fs.readFileSync("./config/conAppInitTicket.txt", "utf8");
+    const ticket = await signJwt(expectedResult);
 
-    const result: SAConsApprovalInitializeSaToSp1JWT =
+    const result: ReceivedSAConsInitialization =
       await SA.consentFlows.receiveConsentApprovalInitialization(ticket);
 
-    expect(result).toEqual(expectedResult);
+    expect(result.ticket).toEqual(expectedResult);
   });
 
   it("should receive a finalize consent approval", async () => {
     const expectedResult = {
-      iss: "Association Hub",
+      iss: "Association Orchestrator",
       aud: "test",
       goal: "FINALIZE",
       type: "CONSENT_APPROVAL",
       consReqId: "789",
       consId: "123",
     };
-    const ticket = fs.readFileSync("./config/conAppFinTicket.txt", "utf8");
+    const ticket = await signJwt(expectedResult);
 
     const result: SAConsApprovalFinalizeSaToSp2JWT =
       await SA.consentFlows.receiveConsentApprovalFinalization(ticket);
 
     expect(result).toEqual(expectedResult);
+  });
+});
+
+describe("Properly encode and decode conditions and resources", () => {
+  let SA = new SmartAccess();
+  beforeEach(async () => {
+    SA = new SmartAccess();
+    await SA.init();
+  })
+
+  it("Encode and decode conditions", async () => {
+    const conditions = [
+      {
+        tenant: "org",
+        system: "sp",
+        expression: {
+          key: "key",
+          value: "FirstCondition",
+        }
+      },
+      {
+        tenant: "org",
+        system: "sp",
+        expression: {
+          key: "key",
+          value: "Second+Condition",
+        }
+      },
+      {
+        tenant: "org",
+        system: "sp",
+        expression: {
+          key: "key",
+          value: "Third/Condition",
+        }
+      },
+      {
+        tenant: "org",
+        system: "sp",
+        expression: {
+          key: "key",
+          value: "Fourth=Condition",
+        }
+      },
+      {
+        tenant: "org",
+        system: "sp",
+        expression: {
+          key: "key",
+          value: "Fifth:Condition",
+        }
+      },
+      {
+        tenant: "org",
+        system: "sp",
+        expression: {
+          key: "key",
+          value: "Sixth%Condition",
+        }
+      },
+      {
+        tenant: "org",
+        system: "sp",
+        expression: {
+          key: "key",
+          value: "Seventh;Condition",
+        }
+      },
+      {
+        tenant: "org",
+        system: "sp",
+        expression: {
+          key: "key",
+          value: "-_.!~*'()",
+        }
+      },
+    ];
+    const expectedResult = [
+      "org:sp/key=FirstCondition",
+      "org:sp/key=Second%2BCondition",
+      "org:sp/key=Third%2FCondition",
+      "org:sp/key=Fourth%3DCondition",
+      "org:sp/key=Fifth%3ACondition",
+      "org:sp/key=Sixth%25Condition",
+      "org:sp/key=Seventh%3BCondition",
+      "org:sp/key=-_.!~*'()",
+    ];
+
+    const result = await SA.consentFlows.createConsentRequestInitialization({
+      consentServiceProviderId: "",
+      conditions: conditions,
+    });
+
+    const openResult = <SAConsReqInitializeSaToSp2JWT>(
+      (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
+    );
+
+    // Check encoding
+    expect(openResult.conditions).toEqual(expectedResult);
+    // Check decoding
+    expect(SA.consentFlows.getConditionStringFormat(openResult.conditions)).toEqual(conditions);
+  });
+
+  it("Encode and decode resources", async () => {
+    const resources = [
+      {
+        tenant: "org",
+        system: "sp",
+        resourceTags: [
+          {
+            key: "Key",
+            value: "FirstValue",
+          },
+          {
+            key: "Key",
+            value: "Second+Value",
+          },
+          {
+            key: "Key",
+            value: "Third/Value",
+          },
+          {
+            key: "Key",
+            value: "Fourth=Value",
+          },
+          {
+            key: "Key",
+            value: "Fifth:Value",
+          },
+          {
+            key: "Key",
+            value: "Sixth%Value",
+          },
+        ],
+      },
+    ];
+    const expectedResult = [
+      "org:sp/Key=FirstValue/Key=Second%2BValue/Key=Third%2FValue/Key=Fourth%3DValue/Key=Fifth%3AValue/Key=Sixth%25Value",
+    ];
+
+    const result = await SA.consentFlows.createConsentRequestInitialization({
+      consentServiceProviderId: "",
+      resources: resources,
+    });
+
+    const openResult = <SAConsReqInitializeSaToSp2JWT>(
+      (<any>(await jwtVerify(result.token, createPublicKey(publicKey))).payload)
+    );
+
+    // Check encoding
+    expect(openResult.resources).toEqual(expectedResult);
+    // Check decoding
+    expect(SA.consentFlows.getResourceStringFormat(openResult.resources)).toEqual(resources);
   });
 });

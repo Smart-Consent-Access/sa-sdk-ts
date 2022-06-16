@@ -1,128 +1,25 @@
 import SmartAccess from "../index";
 import { SAAuthTicket } from "@smart-consent-access/sa-typings";
 
-const SA = new SmartAccess();
-
-const mockResult = [
-  {
-    id: "e77632f4-789c-4186-a804-c5b1e4e16079",
-    reqServiceProviderId: "1",
-    actions: ["telia:smartfamily/CreateDoorlockPin"],
-    resources: [
-      "telia:smartfamily/RealEstate=*/Building=*/User=123/Family=*/DeviceType=Doorlock/Device=*",
-    ],
-  },
-  {
-    id: "e77632f4-789c-4186-a804-c5b1e4e16079",
-    reqServiceProviderId: "2",
-    actions: ["telia:smartfamily/CreateDoorlockPin"],
-    resources: [
-      "telia:smartfamily/RealEstate=*/Building=*/User=NoMSISDN/Family=*/DeviceType=Doorlock/Device=*",
-    ],
-  },
-  {
-    id: "e77632f4-789c-4186-a804-c5b1e4e16079",
-    reqServiceProviderId: "3",
-    actions: ["telia:smartfamily/CreateDoorlockPin"],
-    resources: [
-      "telia:smartfamily/RealEstate=*/Building=*/User=456/Family=*/DeviceType=Doorlock/Device=*",
-    ],
-  },
-  {
-    id: "e77632f4-789c-4186-a804-c5b1e4e16079",
-    reqServiceProviderId: "3",
-    actions: ["telia:smartfamily/CreateDoorlockPin"],
-    resources: [
-      "telia:smartfamily/RealEstate=*/Building=*/User=456/Family=*/DeviceType=Doorlock/Device=*",
-    ],
-  },
-];
-
 jest.mock("../types/PromiseAPI", () => {
   return {
     PromiseServiceProvidersApi: jest.fn().mockImplementation(() => {}),
-    PromiseBackofficeInternalAdminApi: jest.fn().mockImplementation(() => {}),
-    PromiseConsentRequestsApi: jest.fn().mockImplementation(() => {
-      return {
-        getConsentRequests: jest.fn().mockImplementation(() => {
-          return mockResult;
-        }),
-      };
-    }),
+    PromiseConsentRequestsApi: jest.fn().mockImplementation(() => {}),
     PromiseConsentsApi: jest.fn().mockImplementation(() => {}),
+    PromiseActionTemplatesApi: jest.fn().mockImplementation(() => {}),
   };
 });
 
-describe("fetch", () => {
-  it("should fetch a request for customer consent a receive a single object", async () => {
-    const resourceName = "User";
-    const msisdn = "123";
-    const expectedResult = [
-      {
-        id: "e77632f4-789c-4186-a804-c5b1e4e16079",
-        reqServiceProviderId: "1",
-        actions: ["telia:smartfamily/CreateDoorlockPin"],
-        resources: [
-          "telia:smartfamily/RealEstate=*/Building=*/User=123/Family=*/DeviceType=Doorlock/Device=*",
-        ],
-      },
-    ];
-
-    const result = await SA.consentSearch.fetchConsentRequestForResource({
-      resourceId: msisdn,
-      resourceName: resourceName,
-    });
-
-    expect(result).toEqual(expectedResult);
-  });
-
-  it("should receive nothing if msisdn do not match any", async () => {
-    const msisdn = "789";
-    const resourceName = "User";
-
-    const result = await SA.consentSearch.fetchConsentRequestForResource({
-      resourceId: msisdn,
-      resourceName: resourceName,
-    });
-
-    expect(result).toEqual([]);
-  });
-
-  it("should fetch multiple request for customer consent", async () => {
-    const msisdn = "456";
-    const resourceName = "User";
-    const expectedResult = [
-      {
-        id: "e77632f4-789c-4186-a804-c5b1e4e16079",
-        reqServiceProviderId: "3",
-        actions: ["telia:smartfamily/CreateDoorlockPin"],
-        resources: [
-          "telia:smartfamily/RealEstate=*/Building=*/User=456/Family=*/DeviceType=Doorlock/Device=*",
-        ],
-      },
-      {
-        id: "e77632f4-789c-4186-a804-c5b1e4e16079",
-        reqServiceProviderId: "3",
-        actions: ["telia:smartfamily/CreateDoorlockPin"],
-        resources: [
-          "telia:smartfamily/RealEstate=*/Building=*/User=456/Family=*/DeviceType=Doorlock/Device=*",
-        ],
-      },
-    ];
-
-    const result = await SA.consentSearch.fetchConsentRequestForResource({
-      resourceId: msisdn,
-      resourceName: resourceName,
-    });
-
-    expect(result).toEqual(expectedResult);
-  });
-});
-
 describe("find", () => {
+  let SA = new SmartAccess();
+  beforeEach(async () => {
+    SA = new SmartAccess();
+    await SA.init();
+  })
+
   const ticket: SAAuthTicket = {
     kind: "AUTH_TICKET",
-    scope: ["serviceprovider:ticket"],
+    scope: ["serviceprovider:ticket", "serviceprovider:info"],
     reqServiceProviderId: "string",
     reqPrincipalId: "string",
     consServiceProviderId: "string",
@@ -131,7 +28,7 @@ describe("find", () => {
     resources: [],
     conditions: [],
     aud: "string",
-    iss: "string",
+    iss: "Association Orchestrator",
     iat: 1,
     exp: 1,
   };

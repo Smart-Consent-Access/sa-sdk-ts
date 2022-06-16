@@ -1,7 +1,6 @@
-[33m@smart-consent-access/sa-sdk-ts:prep: [0mcache hit, replaying output [2m4d6ad948af05cff5[0m
-[33m@smart-consent-access/sa-sdk-ts:prep: [0m$ npm run build
-[33m@smart-consent-access/sa-sdk-ts:prep: [0mnpm WARN lifecycle The node binary used for scripts is /tmp/yarn--1645611115498-0.1520462589280478/node but npm is using /home/luso/.nvm/versions/node/v16.10.0/bin/node itself. Use the `--scripts-prepend-node-path` option to include the path for the node binary npm was executed with.
-[33m@smart-consent-access/sa-sdk-ts:prep: [0m
-[33m@smart-consent-access/sa-sdk-ts:prep: [0m> @smart-consent-access/sa-sdk-ts@1.0.2 build /home/luso/AO/ah-root/packages/ao-sdk/typescript-sdk/sa-sdk-ts
-[33m@smart-consent-access/sa-sdk-ts:prep: [0m> rm -rf dist && tsc
-[33m@smart-consent-access/sa-sdk-ts:prep: [0m
+[32m@smart-consent-access/sa-sdk-ts:prep: [0mcache hit, replaying output [2m67829e1690db4013[0m
+[32m@smart-consent-access/sa-sdk-ts:prep: [0m$ npm run build
+[32m@smart-consent-access/sa-sdk-ts:prep: [0m
+[32m@smart-consent-access/sa-sdk-ts:prep: [0m> @smart-consent-access/sa-sdk-ts@1.0.11 build
+[32m@smart-consent-access/sa-sdk-ts:prep: [0m> rm -rf dist && tsc
+[32m@smart-consent-access/sa-sdk-ts:prep: [0m
