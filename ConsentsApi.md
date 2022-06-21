@@ -340,7 +340,6 @@ const apiInstance = new .ConsentsApi(configuration);
 let body:.ConsentsApiSingleProviderConsentRequest = {
   // SingleProviderConsentDTO | Info about the consent to create
   singleProviderConsentDTO: {
-    serviceProviderId: "serviceProviderId_example",
     reqPrincipalName: "reqPrincipalName_example",
     reqPrincipalId: "reqPrincipalId_example",
     consPrincipalName: "consPrincipalName_example",

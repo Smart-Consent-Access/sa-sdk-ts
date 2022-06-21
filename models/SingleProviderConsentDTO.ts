@@ -13,7 +13,6 @@
 import { HttpFile } from '../http/http';
 
 export class SingleProviderConsentDTO {
-    'serviceProviderId': string;
     'reqPrincipalName': string;
     'reqPrincipalId': string;
     'consPrincipalName': string;
@@ -30,12 +29,6 @@ export class SingleProviderConsentDTO {
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
-        {
-            "name": "serviceProviderId",
-            "baseName": "serviceProviderId",
-            "type": "string",
-            "format": ""
-        },
         {
             "name": "reqPrincipalName",
             "baseName": "reqPrincipalName",

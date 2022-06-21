@@ -1,6 +1,6 @@
-[32m@smart-consent-access/sa-sdk-ts:prep: [0mcache hit, replaying output [2m67829e1690db4013[0m
-[32m@smart-consent-access/sa-sdk-ts:prep: [0m$ npm run build
-[32m@smart-consent-access/sa-sdk-ts:prep: [0m
-[32m@smart-consent-access/sa-sdk-ts:prep: [0m> @smart-consent-access/sa-sdk-ts@1.0.11 build
-[32m@smart-consent-access/sa-sdk-ts:prep: [0m> rm -rf dist && tsc
-[32m@smart-consent-access/sa-sdk-ts:prep: [0m
+[34m@smart-consent-access/sa-sdk-ts:prep: [0mcache hit, replaying output [2m815fa5096ef2ff0b[0m
+[34m@smart-consent-access/sa-sdk-ts:prep: [0m$ npm run build
+[34m@smart-consent-access/sa-sdk-ts:prep: [0m
+[34m@smart-consent-access/sa-sdk-ts:prep: [0m> @smart-consent-access/sa-sdk-ts@1.0.12 build
+[34m@smart-consent-access/sa-sdk-ts:prep: [0m> rm -rf dist && tsc
+[34m@smart-consent-access/sa-sdk-ts:prep: [0m

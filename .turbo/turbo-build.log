@@ -1,2 +1,2 @@
-[33m@smart-consent-access/sa-sdk-ts:build: [0mcache hit, replaying output [2m9d675bc75e7897f4[0m
-[33m@smart-consent-access/sa-sdk-ts:build: [0m$ rm -rf dist && tsc
+[34m@smart-consent-access/sa-sdk-ts:build: [0mcache hit, replaying output [2m2104bfad04a26df5[0m
+[34m@smart-consent-access/sa-sdk-ts:build: [0m$ rm -rf dist && tsc
