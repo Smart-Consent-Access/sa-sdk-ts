@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**flowConsentApprovalFinalize**](ConsentsApi.md#flowConsentApprovalFinalize) | **POST** /consents/flow_consent_approval_finalize | 
 [**flowConsentApprovalInitialize**](ConsentsApi.md#flowConsentApprovalInitialize) | **POST** /consents/flow_consent_approval_initialize | 
 [**getConsent**](ConsentsApi.md#getConsent) | **GET** /consents/{consentId} | 
+[**revokeConsent**](ConsentsApi.md#revokeConsent) | **DELETE** /consents | 
 [**searchConsents**](ConsentsApi.md#searchConsents) | **POST** /consents/search | 
 [**singleProviderConsent**](ConsentsApi.md#singleProviderConsent) | **POST** /consents/single_provider_consent | 
 
@@ -248,6 +249,66 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
+# **revokeConsent**
+> void revokeConsent(inlineObject)
+
+Change the type of a consent to CONSENT_REJECTION Can only be done by the consenting principal
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .ConsentsApi(configuration);
+
+let body:.ConsentsApiRevokeConsentRequest = {
+  // InlineObject
+  inlineObject: {
+    consentId: "19fa2355-70f0-428d-8ee3-601773d50728",
+  },
+};
+
+apiInstance.revokeConsent(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **inlineObject** | **InlineObject**|  |
+
+
+### Return type
+
+**void**
+
+### Authorization
+
+[jwt](README.md#jwt)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**204** | No content |  -  |
+**401** | Authentication failed |  -  |
+**403** | Authorization failed |  -  |
+**404** | Resource not found |  -  |
+**422** | Validation failed |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
 # **searchConsents**
 > PaginationResultDTOConsentSearchResultDTO searchConsents(searchConsentsDTO)
 
@@ -270,6 +331,31 @@ let body:.ConsentsApiSearchConsentsRequest = {
     take: 3.14,
     searchQuery: "searchQuery_example",
     fields: {
+      condition: [
+        {
+          tenant: "tenant_example",
+          system: "system_example",
+          expression: {
+            key: "key_example",
+            value: "value_example",
+          },
+        },
+      ],
+      resourceTag: [
+        {
+          key: "key_example",
+          value: "value_example",
+        },
+      ],
+      action: {
+        tenant: "tenant_example",
+        system: "system_example",
+        actionName: "actionName_example",
+      },
+      consPrincipalId: [
+        "consPrincipalId_example",
+      ],
+      type: "type_example",
       consentRequestId: "consentRequestId_example",
       stopCreatedAt: "stopCreatedAt_example",
       startCreatedAt: "startCreatedAt_example",

@@ -33,12 +33,14 @@ index.ts
 jest.config.js
 main.ts
 middleware.ts
+models/ActionStringDTO.ts
 models/ActionTemplateDTO.ts
 models/ActionValidationErrorDTO.ts
 models/ApiError.ts
 models/ApiErrorDTO.ts
 models/ApprovalDoneUrlDTO.ts
 models/AuthTicketDTO.ts
+models/ConditionStringDTO.ts
 models/ConditionTemplateDTO.ts
 models/ConsentApprovalFinalizeBody.ts
 models/ConsentApprovalInitializeBody.ts
@@ -59,6 +61,8 @@ models/CreateResourceTagTemplateDTO.ts
 models/CreateResourceTemplateDTO.ts
 models/DebugDTO.ts
 models/DebugDTOExampleKeyPair.ts
+models/ExpressionDTO.ts
+models/InlineObject.ts
 models/LegalEntityDTO.ts
 models/LocalizedStringDTO.ts
 models/ObjectSerializer.ts

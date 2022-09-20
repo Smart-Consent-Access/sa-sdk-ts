@@ -326,6 +326,30 @@ let body:.ConsentRequestsApiSearchConsentRequestsRequest = {
     take: 3.14,
     searchQuery: "searchQuery_example",
     fields: {
+      condition: [
+        {
+          tenant: "tenant_example",
+          system: "system_example",
+          expression: {
+            key: "key_example",
+            value: "value_example",
+          },
+        },
+      ],
+      resourceTag: [
+        {
+          key: "key_example",
+          value: "value_example",
+        },
+      ],
+      action: {
+        tenant: "tenant_example",
+        system: "system_example",
+        actionName: "actionName_example",
+      },
+      reqPrincipalId: [
+        "reqPrincipalId_example",
+      ],
       stopCreatedAt: "stopCreatedAt_example",
       startCreatedAt: "startCreatedAt_example",
       status: "status_example",

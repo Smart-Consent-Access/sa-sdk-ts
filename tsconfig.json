@@ -20,6 +20,7 @@
     "outDir": "./dist",
     "noLib": false,
     "lib": [ "es6", "dom" ],
+    "skipLibCheck": true
   },
   "exclude": [
     "dist",

@@ -14,6 +14,7 @@ import { AuthTicketDTO } from '../models/AuthTicketDTO';
 import { ConsentApprovalFinalizeBody } from '../models/ConsentApprovalFinalizeBody';
 import { ConsentApprovalInitializeBody } from '../models/ConsentApprovalInitializeBody';
 import { ConsentDTO } from '../models/ConsentDTO';
+import { InlineObject } from '../models/InlineObject';
 import { PaginationResultDTOConsentSearchResultDTO } from '../models/PaginationResultDTOConsentSearchResultDTO';
 import { SearchConsentsDTO } from '../models/SearchConsentsDTO';
 import { SingleProviderConsentDTO } from '../models/SingleProviderConsentDTO';
@@ -179,6 +180,54 @@ export class ConsentsApiRequestFactory extends BaseAPIRequestFactory {
 
 
         // Body Params
+
+        let authMethod = null;
+        // Apply auth methods
+        authMethod = _config.authMethods["jwt"]
+        if (authMethod) {
+            await authMethod.applySecurityAuthentication(requestContext);
+        }
+
+        return requestContext;
+    }
+
+    /**
+     * Change the type of a consent to CONSENT_REJECTION Can only be done by the consenting principal
+     * @param inlineObject 
+     */
+    public async revokeConsent(inlineObject: InlineObject, _options?: Configuration): Promise<RequestContext> {
+        let _config = _options || this.configuration;
+
+        // verify required parameter 'inlineObject' is not null or undefined
+        if (inlineObject === null || inlineObject === undefined) {
+            throw new RequiredError('Required parameter inlineObject was null or undefined when calling revokeConsent.');
+        }
+
+
+        // Path Params
+        const localVarPath = '/consents';
+
+        // Make Request Context
+        const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.DELETE);
+        requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
+
+        // Query Params
+
+        // Header Params
+
+        // Form Params
+
+
+        // Body Params
+        const contentType = ObjectSerializer.getPreferredMediaType([
+            "application/json"
+        ]);
+        requestContext.setHeaderParam("Content-Type", contentType);
+        const serializedBody = ObjectSerializer.stringify(
+            ObjectSerializer.serialize(inlineObject, "InlineObject", ""),
+            contentType
+        );
+        requestContext.setBody(serializedBody);
 
         let authMethod = null;
         // Apply auth methods
@@ -515,6 +564,60 @@ export class ConsentsApiResponseProcessor {
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ConsentDTO", ""
             ) as ConsentDTO;
+            return body;
+        }
+
+        let body = response.body || "";
+        throw new ApiException<string>(response.httpStatusCode, "Unknown API Status Code!\nBody: \"" + body + "\"");
+    }
+
+    /**
+     * Unwraps the actual response sent by the server from the response context and deserializes the response content
+     * to the expected objects
+     *
+     * @params response Response returned by the server for a request to revokeConsent
+     * @throws ApiException if the response code was not in [200, 299]
+     */
+     public async revokeConsent(response: ResponseContext): Promise<void > {
+        const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
+        if (isCodeInRange("204", response.httpStatusCode)) {
+            return;
+        }
+        if (isCodeInRange("401", response.httpStatusCode)) {
+            const body: ApiErrorDTO = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ApiErrorDTO", ""
+            ) as ApiErrorDTO;
+            throw new ApiException<ApiErrorDTO>(401, body);
+        }
+        if (isCodeInRange("403", response.httpStatusCode)) {
+            const body: ApiErrorDTO = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ApiErrorDTO", ""
+            ) as ApiErrorDTO;
+            throw new ApiException<ApiErrorDTO>(403, body);
+        }
+        if (isCodeInRange("404", response.httpStatusCode)) {
+            const body: ApiErrorDTO = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ApiErrorDTO", ""
+            ) as ApiErrorDTO;
+            throw new ApiException<ApiErrorDTO>(404, body);
+        }
+        if (isCodeInRange("422", response.httpStatusCode)) {
+            const body: ValidationErrorDTO = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ValidationErrorDTO", ""
+            ) as ValidationErrorDTO;
+            throw new ApiException<ValidationErrorDTO>(422, body);
+        }
+
+        // Work around for missing responses in specification, e.g. for petstore.yaml
+        if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
+            const body: void = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "void", ""
+            ) as void;
             return body;
         }
 

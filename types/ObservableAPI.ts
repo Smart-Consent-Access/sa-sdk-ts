@@ -3,11 +3,13 @@ import * as models from '../models/all';
 import { Configuration} from '../configuration'
 import { Observable, of, from } from '../rxjsStub';
 import {mergeMap, map} from  '../rxjsStub';
+import { ActionStringDTO } from '../models/ActionStringDTO';
 import { ActionTemplateDTO } from '../models/ActionTemplateDTO';
 import { ActionValidationErrorDTO } from '../models/ActionValidationErrorDTO';
 import { ApiErrorDTO } from '../models/ApiErrorDTO';
 import { ApprovalDoneUrlDTO } from '../models/ApprovalDoneUrlDTO';
 import { AuthTicketDTO } from '../models/AuthTicketDTO';
+import { ConditionStringDTO } from '../models/ConditionStringDTO';
 import { ConditionTemplateDTO } from '../models/ConditionTemplateDTO';
 import { ConsentApprovalFinalizeBody } from '../models/ConsentApprovalFinalizeBody';
 import { ConsentApprovalInitializeBody } from '../models/ConsentApprovalInitializeBody';
@@ -28,6 +30,8 @@ import { CreateResourceTagTemplateDTO } from '../models/CreateResourceTagTemplat
 import { CreateResourceTemplateDTO } from '../models/CreateResourceTemplateDTO';
 import { DebugDTO } from '../models/DebugDTO';
 import { DebugDTOExampleKeyPair } from '../models/DebugDTOExampleKeyPair';
+import { ExpressionDTO } from '../models/ExpressionDTO';
+import { InlineObject } from '../models/InlineObject';
 import { LegalEntityDTO } from '../models/LegalEntityDTO';
 import { LocalizedStringDTO } from '../models/LocalizedStringDTO';
 import { PaginationResultDTOConsentRequestSearchResultDTO } from '../models/PaginationResultDTOConsentRequestSearchResultDTO';
@@ -445,6 +449,29 @@ export class ObservableConsentsApi {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getConsent(rsp)));
+            }));
+    }
+ 
+    /**
+     * Change the type of a consent to CONSENT_REJECTION Can only be done by the consenting principal
+     * @param inlineObject 
+     */
+    public revokeConsent(inlineObject: InlineObject, _options?: Configuration): Observable<void> {
+        const requestContextPromise = this.requestFactory.revokeConsent(inlineObject, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.revokeConsent(rsp)));
             }));
     }
  

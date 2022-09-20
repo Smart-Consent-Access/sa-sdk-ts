@@ -1,6 +1,6 @@
 {
   "name": "@smart-consent-access/sa-sdk-ts",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "OpenAPI client for sa-sdk-ts",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [
@@ -19,7 +19,7 @@
     "test": "yarn env-cmd -f ./.env yarn jest"
   },
   "dependencies": {
-    "@smart-consent-access/sa-typings": "^1.0.2",
+    "@smart-consent-access/sa-typings": "^1.0.4",
     "node-fetch": "^2.6.0",
     "@types/node-fetch": "^2.5.7",
     "@types/jsonwebtoken": "^8.5.5",

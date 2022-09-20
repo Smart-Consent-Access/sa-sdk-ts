@@ -1,8 +1,10 @@
+export * from './ActionStringDTO';
 export * from './ActionTemplateDTO';
 export * from './ActionValidationErrorDTO';
 export * from './ApiErrorDTO';
 export * from './ApprovalDoneUrlDTO';
 export * from './AuthTicketDTO';
+export * from './ConditionStringDTO';
 export * from './ConditionTemplateDTO';
 export * from './ConsentApprovalFinalizeBody';
 export * from './ConsentApprovalInitializeBody';
@@ -23,6 +25,8 @@ export * from './CreateResourceTagTemplateDTO';
 export * from './CreateResourceTemplateDTO';
 export * from './DebugDTO';
 export * from './DebugDTOExampleKeyPair';
+export * from './ExpressionDTO';
+export * from './InlineObject';
 export * from './LegalEntityDTO';
 export * from './LocalizedStringDTO';
 export * from './PaginationResultDTOConsentRequestSearchResultDTO';
@@ -45,11 +49,13 @@ export * from './ServiceProviderPatchDTO';
 export * from './SingleProviderConsentDTO';
 export * from './ValidationErrorDTO';
 
+import { ActionStringDTO } from './ActionStringDTO';
 import { ActionTemplateDTO } from './ActionTemplateDTO';
 import { ActionValidationErrorDTO } from './ActionValidationErrorDTO';
 import { ApiErrorDTO } from './ApiErrorDTO';
 import { ApprovalDoneUrlDTO } from './ApprovalDoneUrlDTO';
 import { AuthTicketDTO } from './AuthTicketDTO';
+import { ConditionStringDTO } from './ConditionStringDTO';
 import { ConditionTemplateDTO } from './ConditionTemplateDTO';
 import { ConsentApprovalFinalizeBody } from './ConsentApprovalFinalizeBody';
 import { ConsentApprovalInitializeBody } from './ConsentApprovalInitializeBody';
@@ -58,7 +64,7 @@ import { ConsentRequestFinalizeBody } from './ConsentRequestFinalizeBody';
 import { ConsentRequestFinalizeUrlDTO } from './ConsentRequestFinalizeUrlDTO';
 import { ConsentRequestSearchResultDTO              , ConsentRequestSearchResultDTOResponseTotalStatusEnum        } from './ConsentRequestSearchResultDTO';
 import { ConsentRequestSearchResultDTOConsents } from './ConsentRequestSearchResultDTOConsents';
-import { ConsentRequestSummaryDTO              , ConsentRequestSummaryDTOResponseTotalStatusEnum    } from './ConsentRequestSummaryDTO';
+import { ConsentRequestSummaryDTO              , ConsentRequestSummaryDTOResponseTotalStatusEnum     } from './ConsentRequestSummaryDTO';
 import { ConsentRequestTokenBody } from './ConsentRequestTokenBody';
 import { ConsentRequestUrlDTO } from './ConsentRequestUrlDTO';
 import { ConsentSearchResultDTO } from './ConsentSearchResultDTO';
@@ -70,6 +76,8 @@ import { CreateResourceTagTemplateDTO } from './CreateResourceTagTemplateDTO';
 import { CreateResourceTemplateDTO } from './CreateResourceTemplateDTO';
 import { DebugDTO } from './DebugDTO';
 import { DebugDTOExampleKeyPair } from './DebugDTOExampleKeyPair';
+import { ExpressionDTO } from './ExpressionDTO';
+import { InlineObject } from './InlineObject';
 import { LegalEntityDTO } from './LegalEntityDTO';
 import { LocalizedStringDTO } from './LocalizedStringDTO';
 import { PaginationResultDTOConsentRequestSearchResultDTO } from './PaginationResultDTOConsentRequestSearchResultDTO';
@@ -120,11 +128,13 @@ let enumsMap: Set<string> = new Set<string>([
 ]);
 
 let typeMap: {[index: string]: any} = {
+    "ActionStringDTO": ActionStringDTO,
     "ActionTemplateDTO": ActionTemplateDTO,
     "ActionValidationErrorDTO": ActionValidationErrorDTO,
     "ApiErrorDTO": ApiErrorDTO,
     "ApprovalDoneUrlDTO": ApprovalDoneUrlDTO,
     "AuthTicketDTO": AuthTicketDTO,
+    "ConditionStringDTO": ConditionStringDTO,
     "ConditionTemplateDTO": ConditionTemplateDTO,
     "ConsentApprovalFinalizeBody": ConsentApprovalFinalizeBody,
     "ConsentApprovalInitializeBody": ConsentApprovalInitializeBody,
@@ -144,6 +154,8 @@ let typeMap: {[index: string]: any} = {
     "CreateResourceTemplateDTO": CreateResourceTemplateDTO,
     "DebugDTO": DebugDTO,
     "DebugDTOExampleKeyPair": DebugDTOExampleKeyPair,
+    "ExpressionDTO": ExpressionDTO,
+    "InlineObject": InlineObject,
     "LegalEntityDTO": LegalEntityDTO,
     "LocalizedStringDTO": LocalizedStringDTO,
     "PaginationResultDTOConsentRequestSearchResultDTO": PaginationResultDTOConsentRequestSearchResultDTO,

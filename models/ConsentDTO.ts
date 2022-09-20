@@ -20,9 +20,11 @@ import { HttpFile } from '../http/http';
 */
 export class ConsentDTO {
     'id': string;
+    'consentRequestId': string;
     'type': ConsentType;
     'legalEntity'?: LegalEntityDTO;
     'policy'?: Array<PolicyDTO>;
+    'createdAt': Date;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -30,6 +32,12 @@ export class ConsentDTO {
         {
             "name": "id",
             "baseName": "id",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "consentRequestId",
+            "baseName": "consentRequestId",
             "type": "string",
             "format": ""
         },
@@ -50,6 +58,12 @@ export class ConsentDTO {
             "baseName": "policy",
             "type": "Array<PolicyDTO>",
             "format": ""
+        },
+        {
+            "name": "createdAt",
+            "baseName": "createdAt",
+            "type": "Date",
+            "format": "date-time"
         }    ];
 
     static getAttributeTypeMap() {

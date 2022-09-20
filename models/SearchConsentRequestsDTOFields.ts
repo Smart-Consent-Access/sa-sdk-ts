@@ -10,12 +10,28 @@
  * Do not edit the class manually.
  */
 
+import { ActionStringDTO } from './ActionStringDTO';
+import { ConditionStringDTO } from './ConditionStringDTO';
+import { ExpressionDTO } from './ExpressionDTO';
 import { HttpFile } from '../http/http';
 
 /**
 * Fields to filter on in the search. Atleast reqServiceProviderId or consServiceProviderId or both is required and the searching serviceprovider (caller) must be one of them. The other fields are optional. It is a search hit if all fields matches a consent request (AND)
 */
 export class SearchConsentRequestsDTOFields {
+    /**
+    * Consented condition. Take all consents that matches atleast one condition (all conditions do not have to match the same consent). Empty list matches all
+    */
+    'condition'?: Array<ConditionStringDTO>;
+    /**
+    * Consented resource. Take all consents that matches atleast one resource tag (all tags do not have to match the same consent). Empty list matches all
+    */
+    'resourceTag'?: Array<ExpressionDTO>;
+    'action'?: ActionStringDTO;
+    /**
+    * Id of the consenting principal (some user). Take all consents that matches an id (all ids do not have to match the same consent). Empty list matches all
+    */
+    'reqPrincipalId'?: Array<string>;
     /**
     * Only take consent requests created before or equal to this timestamp.
     */
@@ -40,6 +56,30 @@ export class SearchConsentRequestsDTOFields {
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
+        {
+            "name": "condition",
+            "baseName": "condition",
+            "type": "Array<ConditionStringDTO>",
+            "format": ""
+        },
+        {
+            "name": "resourceTag",
+            "baseName": "resourceTag",
+            "type": "Array<ExpressionDTO>",
+            "format": ""
+        },
+        {
+            "name": "action",
+            "baseName": "action",
+            "type": "ActionStringDTO",
+            "format": ""
+        },
+        {
+            "name": "reqPrincipalId",
+            "baseName": "reqPrincipalId",
+            "type": "Array<string>",
+            "format": ""
+        },
         {
             "name": "stopCreatedAt",
             "baseName": "stopCreatedAt",

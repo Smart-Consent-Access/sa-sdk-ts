@@ -31,6 +31,7 @@ export class ConsentRequestSummaryDTO {
     'numRejected': number;
     'responseTotalStatus': ConsentRequestSummaryDTOResponseTotalStatusEnum;
     'numAffectedUsers': number;
+    'createdAt': Date;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -130,6 +131,12 @@ export class ConsentRequestSummaryDTO {
             "baseName": "numAffectedUsers",
             "type": "number",
             "format": "double"
+        },
+        {
+            "name": "createdAt",
+            "baseName": "createdAt",
+            "type": "Date",
+            "format": "date-time"
         }    ];
 
     static getAttributeTypeMap() {

@@ -2,11 +2,13 @@ import { ResponseContext, RequestContext, HttpFile } from '../http/http';
 import * as models from '../models/all';
 import { Configuration} from '../configuration'
 
+import { ActionStringDTO } from '../models/ActionStringDTO';
 import { ActionTemplateDTO } from '../models/ActionTemplateDTO';
 import { ActionValidationErrorDTO } from '../models/ActionValidationErrorDTO';
 import { ApiErrorDTO } from '../models/ApiErrorDTO';
 import { ApprovalDoneUrlDTO } from '../models/ApprovalDoneUrlDTO';
 import { AuthTicketDTO } from '../models/AuthTicketDTO';
+import { ConditionStringDTO } from '../models/ConditionStringDTO';
 import { ConditionTemplateDTO } from '../models/ConditionTemplateDTO';
 import { ConsentApprovalFinalizeBody } from '../models/ConsentApprovalFinalizeBody';
 import { ConsentApprovalInitializeBody } from '../models/ConsentApprovalInitializeBody';
@@ -27,6 +29,8 @@ import { CreateResourceTagTemplateDTO } from '../models/CreateResourceTagTemplat
 import { CreateResourceTemplateDTO } from '../models/CreateResourceTemplateDTO';
 import { DebugDTO } from '../models/DebugDTO';
 import { DebugDTOExampleKeyPair } from '../models/DebugDTOExampleKeyPair';
+import { ExpressionDTO } from '../models/ExpressionDTO';
+import { InlineObject } from '../models/InlineObject';
 import { LegalEntityDTO } from '../models/LegalEntityDTO';
 import { LocalizedStringDTO } from '../models/LocalizedStringDTO';
 import { PaginationResultDTOConsentRequestSearchResultDTO } from '../models/PaginationResultDTOConsentRequestSearchResultDTO';
@@ -305,6 +309,15 @@ export interface ConsentsApiGetConsentRequest {
     consentId: string
 }
 
+export interface ConsentsApiRevokeConsentRequest {
+    /**
+     * 
+     * @type InlineObject
+     * @memberof ConsentsApirevokeConsent
+     */
+    inlineObject: InlineObject
+}
+
 export interface ConsentsApiSearchConsentsRequest {
     /**
      * The search parameters
@@ -360,6 +373,14 @@ export class ObjectConsentsApi {
      */
     public getConsent(param: ConsentsApiGetConsentRequest, options?: Configuration): Promise<ConsentDTO> {
         return this.api.getConsent(param.consentId,  options).toPromise();
+    }
+
+    /**
+     * Change the type of a consent to CONSENT_REJECTION Can only be done by the consenting principal
+     * @param param the request object
+     */
+    public revokeConsent(param: ConsentsApiRevokeConsentRequest, options?: Configuration): Promise<void> {
+        return this.api.revokeConsent(param.inlineObject,  options).toPromise();
     }
 
     /**

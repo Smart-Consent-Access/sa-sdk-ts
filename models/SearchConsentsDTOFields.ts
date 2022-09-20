@@ -10,12 +10,32 @@
  * Do not edit the class manually.
  */
 
+import { ActionStringDTO } from './ActionStringDTO';
+import { ConditionStringDTO } from './ConditionStringDTO';
+import { ExpressionDTO } from './ExpressionDTO';
 import { HttpFile } from '../http/http';
 
 /**
-* Fields to filter on in the search. Atleast reqServiceProviderId or consServiceProviderId or both is required and the searching serviceprovider (caller) must be one of them. The other fields are optional. It is a search hit if all fields matches a consent request (AND)
+* Fields to filter on in the search. Atleast reqServiceProviderId or consServiceProviderId or both is required and the searching serviceprovider (caller) must be one of them. Alternatively only consentRequestId can be specified, then the caller must be the requester or consenter for that request. The other fields are optional. It is a search hit if all fields matches a consent request (AND)
 */
 export class SearchConsentsDTOFields {
+    /**
+    * Consented condition. Take all consents that matches atleast one condition (all conditions do not have to match the same consent). Empty list matches all
+    */
+    'condition'?: Array<ConditionStringDTO>;
+    /**
+    * Consented resource. Take all consents that matches atleast one resource tag (all tags do not have to match the same consent). Empty list matches all
+    */
+    'resourceTag'?: Array<ExpressionDTO>;
+    'action'?: ActionStringDTO;
+    /**
+    * Id of the consenting principal (some user). Take all consents that matches an id (all ids do not have to match the same consent). Empty list matches all
+    */
+    'consPrincipalId'?: Array<string>;
+    /**
+    * type of consent. For now this is CONSENT_APPROVAL or CONSENT_REJECTION
+    */
+    'type'?: string;
     /**
     * Only take consents for consent request of id
     */
@@ -29,21 +49,51 @@ export class SearchConsentsDTOFields {
     */
     'startCreatedAt'?: string;
     /**
-    * Consent status, for example \"INITIALIZED\", \"FINALIZED\" or \"INACTIVE\"
+    * Consent status: \"INITIALIZED\", \"FINALIZED\" or \"INACTIVE\"
     */
     'status'?: string;
     /**
-    * The serviceprovider that consented (approval)
+    * The serviceprovider that consented the request (consumer)
     */
     'consServiceProviderId'?: string;
     /**
-    * The serviceprovider that requested the consent (consent request)
+    * The serviceprovider that requested the consent (producer)
     */
     'reqServiceProviderId'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
+        {
+            "name": "condition",
+            "baseName": "condition",
+            "type": "Array<ConditionStringDTO>",
+            "format": ""
+        },
+        {
+            "name": "resourceTag",
+            "baseName": "resourceTag",
+            "type": "Array<ExpressionDTO>",
+            "format": ""
+        },
+        {
+            "name": "action",
+            "baseName": "action",
+            "type": "ActionStringDTO",
+            "format": ""
+        },
+        {
+            "name": "consPrincipalId",
+            "baseName": "consPrincipalId",
+            "type": "Array<string>",
+            "format": ""
+        },
+        {
+            "name": "type",
+            "baseName": "type",
+            "type": "string",
+            "format": ""
+        },
         {
             "name": "consentRequestId",
             "baseName": "consentRequestId",
